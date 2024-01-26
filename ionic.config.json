@@ -1,0 +1,7 @@
+{
+  "name": "artbid",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
