@@ -1,0 +1,39 @@
+/* Add this to your global.scss or tab page's CSS file */
+ion-content {
+  --ion-background-color: #f4f4f4; /* Set the desired background color */
+}
+/* Add this to your global.scss or component.scss */
+ion-card {
+  --ion-background-color: #ffffff; /* Set the desired background color (white in this case) */
+}
+
+.custom-card {
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: none;
+  ion-card {
+    ion-card-header {
+      ion-card-subtitle {
+        padding: 20px 20px 5px !important;
+      }
+    }
+  }
+}
+
+.customArtworkImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 25px;
+  box-shadow: inset 0 10px 10px -10px rgba(0, 0, 0, 0.2) !important; /* Set the desired inset box shadow */
+}
+
+.custom-card-medium img {
+  height: 150px;
+  width: 100%;
+  object-fit: cover;
+}
+
+ion-card-subtitle {
+  text-align: center;
+}

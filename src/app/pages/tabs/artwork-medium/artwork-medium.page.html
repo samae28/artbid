@@ -1,0 +1,80 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <!-- <ion-title>{{data?.artMediumName}}</ion-title> -->
+
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'tabs/browse'"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="data?.artMediumName" class="borderBottom">
+    <ion-row class="ion-padding-horizontal" class="dashedBorderBottom">
+      <h1>{{data?.artMediumName}}</h1>
+      <ion-text><p>{{data?.description}}</p></ion-text>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        <ion-label class="ion-text-center">
+          <ion-text>
+            <p>Style</p>
+          </ion-text>
+        </ion-label>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <ion-label>
+          <ion-text>
+            <p>Size</p>
+          </ion-text>
+        </ion-label>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <ion-label>
+          <ion-text>
+            <p>Price</p>
+          </ion-text>
+        </ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngIf="!isLoading"><br>
+    <ion-item-group *ngIf="artworks?.length > 0">
+      <app-art-medium
+        *ngFor="let artwork of data.artworks"
+        [artwork]="artwork"
+        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
+      ></app-art-medium>
+    </ion-item-group>
+  </ion-list>
+
+  <!-- Fixed Price Section -->
+  <!-- <ion-list *ngIf="!isLoading">
+    <ion-list-header class="ion-margin-bottom">
+      <ion-label>
+        <h4>Fixed Price</h4>
+        <p>Discover fixed-price artworks</p>
+      </ion-label> -->
+  <!-- Add a button or link for navigating to all fixed-price artworks if needed -->
+  <!-- </ion-list-header>
+    <ion-item-group *ngIf="fixedPriceArtworks.length > 0">
+      <app-artwork
+        *ngFor="let artwork of fixedPriceArtworks"
+        [artwork]="artwork"
+        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"></app-artwork>
+    </ion-item-group>
+  </ion-list> -->
+  <!-- 
+  <ion-list *ngIf="!isLoading">
+    <ion-list-header class="ion-margin-bottom">
+    </ion-list-header>
+    <ion-item-group *ngIf="(artworks?.length + fixedPriceArtworks?.length) > 0">
+      <app-artwork 
+        *ngFor="let artwork of data.artworks.concat(fixedPriceArtworks)"
+        [artwork]="artwork" 
+        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"></app-artwork>
+    </ion-item-group>
+  </ion-list>
+   -->
+</ion-content>

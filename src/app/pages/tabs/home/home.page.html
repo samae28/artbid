@@ -1,0 +1,74 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>home</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+  <div *ngIf="isLoading"><ion-skeleton-text animated style="height: 25vh;"></ion-skeleton-text></div>
+  <app-loading-artwork *ngIf="isLoading"></app-loading-artwork>
+
+  <app-banner *ngIf="!isLoading" [bannerImages]="banners"></app-banner>
+
+  <!-- <ion-list *ngIf="!isLoading">
+    <ion-list-header class="ion-margin-bottom">
+      <ion-label>
+        <h4>Auction</h4>
+        <p>Discover ongoing auctions</p>
+      </ion-label>
+      <ion-button color="dark" vertical-align-center (click)="navigateToAuctionSegment('current')">
+        See All <span><ion-icon name="chevron-forward-outline"></ion-icon></span>
+      </ion-button>
+    </ion-list-header>
+    <ion-item-group *ngIf="artworks?.length > 0">
+      <app-artwork 
+        *ngFor="let artwork of artworks" 
+        [artwork]="artwork" 
+        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"></app-artwork>
+    </ion-item-group>
+
+  </ion-list> -->
+
+  <ion-list *ngIf="!isLoading">
+    <ion-list-header class="ion-margin-bottom">
+      <ion-label>
+        <h4>Auction</h4>
+        <p>Discover ongoing auctions</p>
+      </ion-label>
+      <ion-button
+        color="dark"
+        vertical-align-center
+        (click)="navigateToAuctionSegment('current')"
+      >
+        See All
+        <span><ion-icon name="chevron-forward-outline"></ion-icon></span>
+      </ion-button>
+    </ion-list-header>
+    <ion-item-group *ngIf="auctionArtworks.length > 0">
+      <app-artwork
+        *ngFor="let artwork of auctionArtworks"
+        [artwork]="artwork"
+        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+      >
+      </app-artwork>
+    </ion-item-group>
+  </ion-list>
+
+  <!-- Fixed Price Section -->
+  <ion-list *ngIf="!isLoading">
+    <ion-list-header class="ion-margin-bottom">
+      <ion-label>
+        <h4>Fixed Price</h4>
+        <p>Discover fixed-price artworks</p>
+      </ion-label>
+      <!-- Add a button or link for navigating to all fixed-price artworks if needed -->
+    </ion-list-header>
+    <ion-item-group *ngIf="fixedPriceArtworks.length > 0">
+      <app-artwork
+        *ngFor="let artwork of fixedPriceArtworks"
+        [artwork]="artwork"
+        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+      ></app-artwork>
+    </ion-item-group>
+  </ion-list>
+</ion-content>

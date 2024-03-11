@@ -1,0 +1,38 @@
+<!-- src/app/home/home.page.html -->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Browse</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-segment (ionSelect)="changeSegment($event)" [ngModel]="selectedSegment">
+    <ion-segment-button value="medium" class="segment-medium">
+      Medium
+    </ion-segment-button>
+    <ion-segment-button value="artist"> Artist </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="selectedSegment === 'medium'">
+    <br><br>
+    <ion-item-group *ngIf="mediums.length > 0">
+      <app-browse-medium
+        *ngFor="let medium of mediums"
+        [medium]="medium"
+        [routerLink]="['/', 'tabs', 'artwork-medium', medium.mediumID]"
+      ></app-browse-medium>
+    </ion-item-group>
+  </div>
+
+  <div *ngIf="selectedSegment === 'artist'">
+    <br><br>
+    <ion-item-group *ngIf="artists.length > 0">
+      <app-browse-artist
+        *ngFor="let artist of artists"
+        [artist]="artist"
+        [routerLink]="['/', 'tabs', 'artist-profile', artist.artistID]"
+      ></app-browse-artist>
+    </ion-item-group>
+  </div>
+</ion-content>

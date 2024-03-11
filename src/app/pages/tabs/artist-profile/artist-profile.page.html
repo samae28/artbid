@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="getBackHref()"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title> Artist name </ion-title> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="profile-header">
+    <ion-col size="5 ">
+      <ion-avatar>
+        <img [alt]="data.artistName" [src]="data.image" />
+      </ion-avatar>
+    </ion-col>
+    <ion-col size="7">
+      <ion-label>
+        <h2>{{ data.artistName }}</h2>
+      </ion-label>
+    </ion-col>
+  </div>
+
+  <ion-segment (ionSelect)="changeSegment($event)" [ngModel]="selectedSegment">
+    <ion-segment-button value="artworks"> Artworks </ion-segment-button>
+    <ion-segment-button value="biography"> Biography </ion-segment-button>
+    <ion-segment-button value="reviews"> Reviews </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="selectedSegment === 'artworks'">
+    <ion-list><br><br><br><br>
+      <ion-item-group *ngIf="artworks?.length > 0">
+        <app-artwork
+          *ngFor="let artwork of data.artworks"
+          [artwork]="artwork"
+          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
+        ></app-artwork>
+      </ion-item-group>
+    </ion-list>
+  </div>
+
+  <div *ngIf="selectedSegment === 'biography'">
+    <br><br><br>
+    <ion-card>
+      <ion-card-header> Artist Biography </ion-card-header>
+      <ion-card-content>
+        <p>{{ data.bio }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div *ngIf="selectedSegment === 'reviews'">
+    <br><br><br> 
+    <ion-card>
+      <ion-card-header> Reviews </ion-card-header>
+      <ion-card-content>
+        <p></p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

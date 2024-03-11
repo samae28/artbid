@@ -1,0 +1,54 @@
+<!-- src/app/home/home.page.html -->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Auction</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-segment (ionSelect)="changeSegment($event)" [ngModel]="selectedSegment">
+    <ion-segment-button value="current"> Current </ion-segment-button>
+    <ion-segment-button value="upcoming"> Upcoming </ion-segment-button>
+    <ion-segment-button value="past"> Past </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="selectedSegment === 'current'">
+    <ion-list *ngIf="!isLoading">
+      <br><br><br>
+      <ion-item-group *ngIf="artworks?.length > 0">
+        <app-auction-current
+          *ngFor="let artwork of artworks"
+          [artwork]="artwork"
+          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+        ></app-auction-current>
+      </ion-item-group>
+    </ion-list>
+  </div>
+
+  <div *ngIf="selectedSegment === 'upcoming'">
+    <ion-list *ngIf="!isLoading">
+      <br><br><br>
+      <ion-item-group *ngIf="artworks?.length > 0">
+        <app-auction-upcoming
+          *ngFor="let artwork of artworks"
+          [artwork]="artwork"
+          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+        ></app-auction-upcoming>
+      </ion-item-group>
+    </ion-list>
+  </div>
+
+  <div *ngIf="selectedSegment === 'past'">
+    <ion-list *ngIf="!isLoading">
+      <br><br><br>
+      <ion-item-group *ngIf="artworks?.length > 0">
+        <app-auction-past
+          *ngFor="let artwork of artworks"
+          [artwork]="artwork"
+          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+        ></app-auction-past>
+      </ion-item-group>
+    </ion-list>
+  </div>
+</ion-content>
