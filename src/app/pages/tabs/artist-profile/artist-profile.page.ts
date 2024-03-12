@@ -16,13 +16,18 @@ export class ArtistProfilePage implements OnInit {
   artists: any[] = [];
   artworks: any[] = [];
   isLoading: boolean = false;
+  auctionArtworks = []; 
+  fixedPriceArtworks = []; 
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private api: ApiService
-  ) {}
+  ) {
+    this.auctionArtworks = this.api.getAuctionArtworks();
+    this.fixedPriceArtworks = this.api.getFixedPriceArtworks();
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {

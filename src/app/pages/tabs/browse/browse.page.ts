@@ -13,12 +13,16 @@ export class BrowsePage implements OnInit {
   mediums: any[] = [];
   artists: any[] = [];
   artworks: any[] = [];
+  auctionArtworks = [];
+  fixedPriceArtworks = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private api: ApiService
-  ) {}
+  ) {
+
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe((queryParams) => {

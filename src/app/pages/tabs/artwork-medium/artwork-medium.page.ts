@@ -25,7 +25,10 @@ export class ArtworkMediumPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private api: ApiService
-  ) {}
+  ) {
+    this.auctionArtworks = this.api.getAuctionArtworks();
+    this.fixedPriceArtworks = this.api.getFixedPriceArtworks();
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
@@ -46,8 +49,8 @@ export class ArtworkMediumPage implements OnInit {
 
       this.data = this.mediums.find((x) => x.mediumID === this.id);
 
-      this.auctionArtworks = this.artworks.filter(artwork => artwork.isAuction);
-      this.fixedPriceArtworks = this.artworks.filter(artwork => !artwork.isAuction);
+      // this.auctionArtworks = this.artworks.filter(artwork => artwork.isAuction);
+      // this.fixedPriceArtworks = this.artworks.filter(artwork => !artwork.isAuction);
       // this.data = this.artworks.filter(artwork => !artwork.isAuction);
 
       this.isLoading = false;

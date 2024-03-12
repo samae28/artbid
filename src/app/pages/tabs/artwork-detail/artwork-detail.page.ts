@@ -48,6 +48,40 @@ export class ArtworkDetailPage implements OnInit {
     });
   }
 
+
+  getArtist(artistID: any): any {
+    console.log('Artists:', this.artists);
+    console.log('ArtistsID to find:', artistID);
+  
+    if (this.artists) {
+      const artist = this.artists.find(
+        (artist) => artist.artistID.toString() === artistID.toString()
+      );
+      console.log('Found Artist:', artist);
+      return artist || { artistName: 'Unknown Artist' };
+    } else {
+      return { artistName: 'Unknown Artist' };
+    }
+  }
+
+  getArtMedium(mediumID: any): any {
+    console.log('Mediums:', this.mediums);
+    console.log('MediumID to find:', mediumID);
+  
+    if (this.mediums) {
+      const medium = this.mediums.find(
+        (medium) => medium.mediumID.toString() === mediumID.toString()
+      );
+      console.log('Found Medium:', medium);
+      return medium || { artMediumName: 'Unknown Medium' };
+    } else {
+      return { artMediumName: 'Unknown Medium' };
+    }
+  }
+  
+
+
+
   navigateToArtistProfile(artistId: string): void {
     this.router.navigate(['/tabs/artist-profile', artistId]);
   }

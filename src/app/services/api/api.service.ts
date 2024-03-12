@@ -14,7 +14,7 @@ export class ApiService {
       artworkID: 'shdksha',
       title: 'Mystical Forest',
       artistID: "103",
-      mediumID: "3",
+      mediumID: "2",
       description:
         'A mesmerizing painting capturing the essence of a mystical forest.',
       image: 'assets/images/art1.jpg',
@@ -34,7 +34,7 @@ export class ApiService {
       artworkID: 'dsjahkjsh',
       title: 'Celestial Sculpture',
       artistID: "103",
-      mediumID: "3",
+      mediumID: "2",
       description:
         'A celestial-inspired sculpture that captivates the imagination.',
       image: 'assets/images/art2.jpg',
@@ -464,4 +464,12 @@ export class ApiService {
   ];
 
   constructor() {}
+
+  getAuctionArtworks(): any[] {
+    return this.artworks.filter((artwork) => artwork.isAuction);
+  }
+
+  getFixedPriceArtworks(): any[] {
+    return this.artworks.filter((artwork) => !artwork.isAuction);
+  }
 }

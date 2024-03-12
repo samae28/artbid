@@ -10,19 +10,21 @@ export class ArtworkComponent implements OnInit {
   @Input() artwork: any;
   artists: any[] = [];
   id: any;
+  mediums: any[] = []
   constructor(private api: ApiService) {}
 
   ngOnInit() {
     console.log('Artwork array:', this.artwork);
     console.log('Artists:', this.artists);
     console.log('ArtistID:', this.artwork.artistID);
-
+    this.artists = this.api.artists;
+    this.mediums = this.api.mediums;
   }
 
   getArtistName(artistID: any): string {
     console.log('Artists:', this.artists);
     console.log('ArtistID to find:', artistID);
-  
+    
     if (this.artists) {
       const artist = this.artists.find(
         (artist) => artist.artistID.toString() === artistID.toString()

@@ -48,7 +48,7 @@
       <app-artwork
         *ngFor="let artwork of auctionArtworks"
         [artwork]="artwork"
-        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
       >
       </app-artwork>
     </ion-item-group>
@@ -67,7 +67,7 @@
       <app-artwork
         *ngFor="let artwork of fixedPriceArtworks"
         [artwork]="artwork"
-        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
       ></app-artwork>
     </ion-item-group>
   </ion-list>

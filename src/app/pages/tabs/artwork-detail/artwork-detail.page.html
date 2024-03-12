@@ -45,9 +45,9 @@
           <ion-list lines="none">
             <ion-item>
               <ion-thumbnail slot="start">
-                <img [alt]="artwork.artist" [src]="artwork.artistImage" />
+                <img [alt]="getArtist(artwork?.artistID).artistName" [src]="getArtist(artwork?.artistID).image" />
               </ion-thumbnail>
-              <ion-label>{{artwork.artist}}</ion-label>
+              <ion-label>{{getArtist(artwork?.artistID).artistName}}</ion-label>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -55,9 +55,9 @@
           <ion-list lines="none">
             <ion-item>
               <ion-thumbnail slot="start">
-                <img [alt]="artwork.artMedium" [src]="artwork.mediumImage" />
+                <img [alt]="getArtMedium(artwork?.mediumID).artMediumName" [src]="getArtMedium(artwork?.mediumID).image" />
               </ion-thumbnail>
-              <ion-label>{{artwork.artMedium}}</ion-label>
+              <ion-label>{{getArtMedium(artwork?.mediumID).artMediumName}}</ion-label>
             </ion-item>
           </ion-list>
         </ion-col>

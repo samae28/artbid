@@ -19,7 +19,10 @@ export class HomePage implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef, 
     private router: Router, 
-    private api: ApiService) { }
+    private api: ApiService) { 
+      this.auctionArtworks = this.api.getAuctionArtworks();
+      this.fixedPriceArtworks = this.api.getFixedPriceArtworks();
+    }
 
   navigateToAuctionSegment(segment: string): void {
     this.router.navigate(['/tabs/auction'], { queryParams: { segment } });
@@ -32,8 +35,8 @@ export class HomePage implements OnInit {
       this.banners = this.api.banners;
       this.artworks = this.api.artworks;
 
-      this.auctionArtworks = this.artworks.filter(artwork => artwork.isAuction);
-      this.fixedPriceArtworks = this.artworks.filter(artwork => !artwork.isAuction);
+      // this.auctionArtworks = this.artworks.filter(artwork => artwork.isAuction);
+      // this.fixedPriceArtworks = this.artworks.filter(artwork => !artwork.isAuction);
 
       this.isLoading = false;
       this.cdr.detectChanges();

@@ -41,11 +41,11 @@
 
   <ion-list *ngIf="!isLoading"><br>
     <ion-item-group *ngIf="artworks?.length > 0">
-      <app-art-medium
+      <app-artwork
         *ngFor="let artwork of data.artworks"
         [artwork]="artwork"
         [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
-      ></app-art-medium>
+      ></app-artwork>
     </ion-item-group>
   </ion-list>
 

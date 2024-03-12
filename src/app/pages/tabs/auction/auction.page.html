@@ -20,7 +20,7 @@
         <app-auction-current
           *ngFor="let artwork of artworks"
           [artwork]="artwork"
-          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
         ></app-auction-current>
       </ion-item-group>
     </ion-list>
@@ -33,7 +33,7 @@
         <app-auction-upcoming
           *ngFor="let artwork of artworks"
           [artwork]="artwork"
-          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
         ></app-auction-upcoming>
       </ion-item-group>
     </ion-list>
@@ -46,7 +46,7 @@
         <app-auction-past
           *ngFor="let artwork of artworks"
           [artwork]="artwork"
-          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
         ></app-auction-past>
       </ion-item-group>
     </ion-list>
