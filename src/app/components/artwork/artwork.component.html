@@ -28,15 +28,15 @@
       <p class="pStyle">{{ artwork?.title }}</p>
 
       <ng-container *ngIf="isAuction(); else fixedPriceContent">
-        <p>Starting Bid: P{{ artwork?.startingBid }}</p>
+        <p>Starting Bid: P{{ artwork?.price }}</p>
         <ion-text color="tertiary">
-          <p class="distance">Current Bid: {{ getHighestBid() }}</p>
+          <p class="distance">Current Bid: {{ getHighestBid(artwork) }}</p>
         </ion-text>
       </ng-container>
 
       <ng-template #fixedPriceContent>
         <ion-text color="tertiary">
-          <p class="distance">Price: P{{ artwork.fixedPrice }}</p>
+          <p class="distance">Price: P{{ artwork.price }}</p>
         </ion-text>
       </ng-template>
     </ion-text>

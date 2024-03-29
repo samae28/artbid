@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api/api.service';
   styleUrls: ['./artist-profile.page.scss'],
 })
 export class ArtistProfilePage implements OnInit {
+  
   id: any;
   data: any = {};
   artistProfile: any[] = [];
@@ -16,8 +17,8 @@ export class ArtistProfilePage implements OnInit {
   artists: any[] = [];
   artworks: any[] = [];
   isLoading: boolean = false;
-  auctionArtworks = []; 
-  fixedPriceArtworks = []; 
+  artistArtworks: any[] = [];
+  mediums: any[] = [];
 
   constructor(
     private router: Router,
@@ -25,8 +26,6 @@ export class ArtistProfilePage implements OnInit {
     private navCtrl: NavController,
     private api: ApiService
   ) {
-    this.auctionArtworks = this.api.getAuctionArtworks();
-    this.fixedPriceArtworks = this.api.getFixedPriceArtworks();
   }
 
   ngOnInit() {
@@ -38,6 +37,7 @@ export class ArtistProfilePage implements OnInit {
       }
       this.id = paramMap.get('artistProfileId');
       console.log('id: ', this.id);
+      this.getArtistArtworks();
       this.getArtistProfile();
     });
     this.isLoading = true;
@@ -45,7 +45,8 @@ export class ArtistProfilePage implements OnInit {
       this.selectedSegment = queryParams['segment'] || 'artworks';
     });
     this.artists = this.api.artists;
-    this.artworks = this.api.artworks;
+    this.artworks = this.api.artworks.map(art => art.isAuction);
+    this.mediums = this.api.mediums;
   }
 
   changeSegment(event: CustomEvent) {
@@ -61,11 +62,14 @@ export class ArtistProfilePage implements OnInit {
     });
   }
 
+  getArtistArtworks() {
+    this.artistArtworks = this.api.artworks.filter(artwork => artwork.artistID === this.id && !artwork.isAuction);
+  }
   
   getArtistProfile() {
-    this.artists = this.api.artists;
-
-    this.data = this.artists.find((x) => x.artistID === this.id);
+    this.artists = this.api.artists; 
+    this.data = this.artists.find((x) => (x.artistID === this.id));
+    this.artworks = this.api.artworks;
     console.log('artistName: ', this.data);
   }
 

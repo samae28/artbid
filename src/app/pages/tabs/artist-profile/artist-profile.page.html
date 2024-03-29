@@ -28,13 +28,16 @@
   </ion-segment>
 
   <div *ngIf="selectedSegment === 'artworks'">
-    <ion-list><br><br><br><br>
-      <ion-item-group *ngIf="artworks?.length > 0">
-        <app-artwork
-          *ngFor="let artwork of data.artworks"
-          [artwork]="artwork"
-          [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
-        ></app-artwork>
+    <ion-list *ngFor="let medium of mediums">
+      <ion-list-header>{{ medium.mediumType }}</ion-list-header>
+      <ion-item-group>
+        <ng-container *ngFor="let artwork of artistArtworks">
+          <app-artwork
+            [artwork]="artwork"
+            [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
+            *ngIf="artwork.mediumID === medium.mediumID"
+          ></app-artwork>
+        </ng-container>
       </ion-item-group>
     </ion-list>
   </div>

@@ -9,346 +9,330 @@ export class ApiService {
     { banner: 'assets/images/image2.png' },
     { banner: 'assets/images/image3.png' },
   ];
+
   artworks = [
     {
       artworkID: 'shdksha',
-      title: 'Mystical Forest',
       artistID: "103",
       mediumID: "2",
+      title: 'Mystical Forest',
       description:
         'A mesmerizing painting capturing the essence of a mystical forest.',
       image: 'assets/images/art1.jpg',
-      isAuction: true,
-      startingBid: 700,
-      fixedPrice: 1100, 
-      bids: [
-        { bidder: 'Bidder5', amount: 750 },
-        { bidder: 'Bidder6', amount: 820 },
-      ],
-      currentBid: 820, 
-      startDate: new Date('2024-06-15T10:00:00'),
-      endDate: new Date('2024-06-28T15:45:00'),
-      isActive: true,
-    },
-    {
-      artworkID: 'dsjahkjsh',
-      title: 'Celestial Sculpture',
-      artistID: "103",
-      mediumID: "2",
-      description:
-        'A celestial-inspired sculpture that captivates the imagination.',
-      image: 'assets/images/art2.jpg',
-      isAuction: true,
-      startingBid: 800,
-      fixedPrice: null,
-      bids: [
-        { bidder: 'Bidder7', amount: 850 },
-        { bidder: 'Bidder8', amount: 920 },
-      ],
-      currentBid: 920, 
-      startDate: new Date('2024-06-15T10:00:00'),
-      endDate: new Date('2024-06-28T15:45:00'),
-      isActive: true,
+      price: 700,
+      status: 'available',
+      isAuction: 1,
+      auction: [
+        {
+          auctionID: "10a",
+          artworkID: 'shdksha',
+          startDate: new Date('2024-03-12T10:00:00'),
+          endDate: new Date('2024-06-28T15:45:00'),
+          bids: [
+            { bidderID: "001", bidAmount: "1000", bidTime: "" },
+            { bidderID: "002", bidAmount: "1050", bidTime: "" }
+          ]
+        }
+      ]
     },
     {
       artworkID: 'asdklfja',
-      title: 'Serenity Sunset',
       artistID: "102",
       mediumID: "6",
+      title: 'Serenity Sunset',
       description:
-        'A tranquil painting capturing the serenity of a beautiful sunset.',
+          'A tranquil painting capturing the serenity of a beautiful sunset.',
       image: 'assets/images/art7.jpg',
-      isAuction: true,
-      startingBid: 1200,
-      fixedPrice: null,
+      price: 1200,
+      status: 'available',
+      isAuction: 1,
+      auction: [
+        {
+      auctionID: "10b",
+      artworkID: 'asdklfja',
+          startDate: new Date('2024-06-01T12:00:00'),
+          endDate: new Date('2024-06-15T18:00:00'),
       bids: [
-        { bidder: 'Bidder8', amount: 1250 },
-        { bidder: 'Bidder9', amount: 1300 },
-      ],
-      currentBid: 1300,
-      startDate: new Date('2024-06-01T12:00:00'),
-      endDate: new Date('2024-06-15T18:00:00'),
-      isActive: true,
+        { bidderID: "001", bidAmount: "1200", bidTime: "" },
+        { bidderID: "002", bidAmount: "1350", bidTime: "" }	
+      ]
+    }
+    ]
+    },
+    {
+      artworkID: 'dsjahkjsh',
+      artistID: "103",
+      mediumID: "2",
+      title: 'Celestial Sculpture',
+      description:
+          'A celestial-inspired sculpture that captivates the imagination.',
+      image: 'assets/images/art2.jpg',
+      price: 800,
+      status: 'available',
+      isAuction: 1,
+      auction: [
+        {
+      auctionID: "10c",
+      artworkID: 'dsjahkjsh',
+          startDate: new Date('2024-02-15T10:00:00'),
+          endDate: new Date('2024-02-28T15:45:00'),
+      bids: [
+        { bidderID: "001", bidAmount: "850", bidTime: "" },
+        { bidderID: "002", bidAmount: "900", bidTime: "" }
+      ]
+    }
+    ]
     },
     {
       artworkID: 'wqeioury',
-      title: 'Bronze Beauty',
       artistID: "101",
       mediumID: "3",
+      title: 'Bronze Beauty',
       description:
-        'An exquisite bronze sculpture showcasing the beauty of classical artistry.',
+          'An exquisite bronze sculpture showcasing the beauty of classical artistry.',
       image: 'assets/images/art4.jpg',
-      isAuction: true,
-      startingBid: 1200,
-      fixedPrice: null,
-      bids: [
-        { bidder: 'Bidder8', amount: 1250 },
-        { bidder: 'Bidder9', amount: 1300 },
-      ],
-      currentBid: 1300,
-      startDate: new Date('2024-06-01T12:00:00'),
-      endDate: new Date('2024-06-15T18:00:00'),
-      isActive: true,
+      price: 1200,
+      status: 'available',
+      isAuction: 1,
+      auction: [
+        {
+        auctionID: "10d",
+        artworkID: 'wqeioury',
+            startDate: new Date('2024-02-15T10:00:00'),
+            endDate: new Date('2024-02-28T15:45:00'),
+        bids: [
+          { bidderID: "001", bidAmount: "1350", bidTime: "" },
+          { bidderID: "002", bidAmount: "1400", bidTime: "" }
+        ]
+      }
+      ]
     },
     {
       artworkID: 'wqeiourc',
-      title: 'Cart On',
       artistID: "101",
       mediumID: "6",
+      title: 'Cart On',
       description:
-        'An exquisite bronze sculpture showcasing the beauty of classical artistry.',
+          'An exquisite bronze sculpture showcasing the beauty of classical artistry.',
       image: 'assets/images/art8.jpg',
-      isAuction: true,
-      startingBid: 1200,
-      fixedPrice: null,
-      bids: [
-        { bidder: 'Bidder8', amount: 1250 },
-        { bidder: 'Bidder9', amount: 1300 },
-      ],
-      currentBid: 1300,
-      startDate: new Date('2024-06-01T14:00:00'),
-      endDate: new Date('2024-06-10T14:00:00'),
-      isActive: true,
+      price: 1200,
+      status: 'available',
+      isAuction: 1,
+      auction: [
+        {
+        auctionID: "10e",
+        artworkID: 'wqeiourc',
+            startDate: new Date('2024-02-15T10:00:00'),
+            endDate: new Date('2024-02-28T15:45:00'),
+        bids: [
+          { bidderID: "001", bidAmount: "1350", bidTime: "" },
+          { bidderID: "002", bidAmount: "1400", bidTime: "" }
+        ]
+      }
+      ]
     },
     {
       artworkID: 'jlskjfhs',
-      title: 'Abstract Harmony',
       artistID: "104",
       mediumID: "1",
+      title: 'Cart On',
       description:
-        'A vibrant abstract painting reflecting the harmony of colors and shapes.',
+          'A vibrant abstract painting reflecting the harmony of colors and shapes.',
       image: 'assets/images/art5.jpg',
-      isAuction: true,
-      startingBid: 500,
-      fixedPrice: null,
-      bids: [
-        { bidder: 'Bidder10', amount: 550 },
-        { bidder: 'Bidder11', amount: 600 },
-      ],
-      currentBid: 600,
-      startDate: new Date('2024-06-01T14:00:00'),
-      endDate: new Date('2024-06-10T14:00:00'),
-      isActive: true,
+      price: 1200,
+      status: 'available',
+      isAuction: 1,
+      auction: [
+        {
+        auctionID: "10f",
+        artworkID: 'jlskjfhs',
+            startDate: new Date('2024-02-15T10:00:00'),
+            endDate: new Date('2024-02-28T15:45:00'),
+        bids: [
+          { bidderID: "001", bidAmount: "1350", bidTime: "" },
+          { bidderID: "002", bidAmount: "1400", bidTime: "" }
+        ]
+      }
+      ]
     },
     {
       artworkID: 'jlskjfgh',
-      title: 'Abstract Harmony',
       artistID: "104",
       mediumID: "1",
+      title: 'Abstract Harmony',
       description:
-        'A vibrant abstract painting reflecting the harmony of colors and shapes.',
+          'A vibrant abstract painting reflecting the harmony of colors and shapes.',
       image: 'assets/images/art5.jpg',
-      isAuction: true,
-      startingBid: 500,
-      fixedPrice: null,
-      bids: [
-        { bidder: 'Bidder10', amount: 550 },
-        { bidder: 'Bidder11', amount: 600 },
-      ],
-      currentBid: 600,
-      startDate: new Date('2024-06-01T14:00:00'),
-      endDate: new Date('2024-06-10T14:00:00'),
-      isActive: true,
+      price: 1200,
+      status: 'available',
+      isAuction: 1,
+      auction: [
+        {
+        auctionID: "10g",
+        artworkID: 'jlskjfgh',
+            startDate: new Date('2024-02-15T10:00:00'),
+            endDate: new Date('2024-02-28T15:45:00'),
+        bids: [
+          { bidderID: "001", bidAmount: "1350", bidTime: "" },
+          { bidderID: "002", bidAmount: "1400", bidTime: "" }
+        ]
+      }
+      ]
     },
     {
       artworkID: 'jlskjfkk',
-      title: 'Abstract Harmony',
       artistID: "104",
       mediumID: "1",
+      title: 'Abstract Harmony',
       description:
-        'A vibrant abstract painting reflecting the harmony of colors and shapes.',
+          'A vibrant abstract painting reflecting the harmony of colors and shapes.',
       image: 'assets/images/art5.jpg',
-      isAuction: false,
-      startingBid: null,
-      fixedPrice: 800,
-      bids: [],
-      currentBid: null,
-      startDate: null,
-      endDate: null,
-      isActive: true,
-    },    
+      price: 1200,
+      status: 'available',
+      isAuction: 0,
+      auction: []
+    },
     {
       artworkID: 'shdksdfksjk',
+      artistID: "104",
+      mediumID: "1",
       title: 'Mystical Forest',
-      artistID: "103", 
-      mediumID: "2",
       description:
-        'A mesmerizing painting capturing the essence of a mystical forest.',
-      image: 'assets/images/art1.jpg',
-      isAuction: false,
-      startingBid: null,
-      fixedPrice: 1100, 
-      bids: [],
-      currentBid: null,
-      startDate: null,
-      endDate: null,
-      isActive: true,
+          'A mesmerizing painting capturing the essence of a mystical forest.',
+      image: 'assets/images/art5.jpg',
+      price: 1200,
+      status: 'available',
+      isAuction: 0,
+      auction: []
     },
     {
       artworkID: 'dsjahfdkljdfk',
-      title: 'Celestial Sculpture',
       artistID: "103",
       mediumID: "2",
+      title: 'Celestial Sculpture',
       description:
-        'A celestial-inspired sculpture that captivates the imagination.',
+          'A celestial-inspired sculpture that captivates the imagination.',
       image: 'assets/images/art2.jpg',
-      isAuction: false,
-      startingBid: null,
-      fixedPrice: 600,
-      bids: [],
-      currentBid: null,
-      startDate: null,
-      endDate: null,
-      isActive: true,
+      price: 1200,
+      status: 'available',
+      isAuction: 0,
+      auction: []
     },
     {
       artworkID: 'asdkldmsdf',
-      title: 'Serenity Sunset',
       artistID: "102",
       mediumID: "6",
+      title: 'Serenity Sunset',
       description:
-        'A tranquil painting capturing the serenity of a beautiful sunset.',
+          'A tranquil painting capturing the serenity of a beautiful sunset.',
       image: 'assets/images/art7.jpg',
-      isAuction: false,
-      startingBid: null,
-      fixedPrice: 820,
-      bids: [],
-      currentBid: null,
-      startDate: null,
-      endDate: null,
-      isActive: true,
+      price: 1200,
+      status: 'available',
+      isAuction: 0,
+      auction: []
     },
     {
       artworkID: 'wqeiodkfsj',
-      title: 'Bronze Beauty',
       artistID: "101",
       mediumID: "3",
+      title: 'Bronze Beauty',
       description:
-        'An exquisite bronze sculpture showcasing the beauty of classical artistry.',
+          'An exquisite bronze sculpture showcasing the beauty of classical artistry.',
       image: 'assets/images/art4.jpg',
-      isAuction: false,
-      startingBid: null,
-      fixedPrice: 750,
-      bids: [],
-      currentBid: null,
-      startDate: null,
-      endDate: null,
-      isActive: true,
+      price: 1200,
+      status: 'available',
+      isAuction: 0,
+      auction: []
     },
     {
       artworkID: 'wqeiodjhs',
-      title: 'Cart On',
       artistID: "101",
       mediumID: "6",
+      title: 'Cart On',
       description:
-        'An exquisite bronze sculpture showcasing the beauty of classical artistry.',
+          'An exquisite bronze sculpture showcasing the beauty of classical artistry.',
       image: 'assets/images/art8.jpg',
-      isAuction: false,
-      startingBid: null,
-      fixedPrice: 950,
-      bids: [],
-      currentBid: null,
-      startDate: null,
-      endDate: null,
-      isActive: true,
-    },
-  ];
-  mediums = [
-    {
-      mediumID: '1',
-      artMediumName: 'Charcoal',
-      image: 'assets/images/charcoal.jpg',
-      description: 'A beautiful artwork created using charcoal painting.',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.mediumID === '1'
-      ),
-    },
-    {
-      mediumID: '2',
-      artMediumName: 'Oil Painting',
-      image: 'assets/images/oil-paint.jpg',
-      description: 'An amazing oil painting capturing the essence of nature.',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.mediumID === '2'
-      ),
-    },
-    {
-      mediumID: '3',
-      artMediumName: 'Digital Art',
-      image: 'assets/images/digital-art.jpg',
-      description:
-        'Innovative digital artwork showcasing creativity through technology.',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.mediumID === '3'
-      ),
-    },
-    {
-      mediumID: '4',
-      artMediumName: 'Acrylic',
-      image: 'assets/images/acrylic.jpg',
-      description: 'Vibrant acrylic painting that brings life to the canvas.',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.mediumID === '4'
-      ),
-    },
-    {
-      mediumID: '5',
-      artMediumName: 'Sculpture',
-      image: 'assets/images/sculpture.jpg',
-      description: 'A captivating sculpture that explores form and texture.',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.mediumID === '5'
-      ),
-    },
-    {
-      mediumID: '6',
-      artMediumName: 'Watercolor',
-      image: 'assets/images/watercolor.jpg',
-      description: 'A watercolor.',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.mediumID === '6'
-      ),
-    },
-  ];
-
-  artists = [
-    {
-      artistID: "101",
-      artistName: 'Gabriel Corpuz',
-      bio: 'A passionate artist with a love for traditional art mediums. Specializes in charcoal and oil painting.',
-      image: 'assets/images/user3.jpg',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.artistID === '101'
-      ),
-    },
-    {
-      artistID: "102",
-      artistName: 'Vhee Valencia',
-      bio: 'An innovative artist exploring the realm of digital art. Pushing boundaries with creativity and technology.',
-      image: 'assets/images/user2.jpg',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.artistID === '102'
-      ),
-    },
-    {
-      artistID: "103",
-      artistName: 'Leandro Sebastian',
-      bio: 'Expressing vibrancy through acrylics and bringing life to the canvas. Captivating viewers with color and form.',
-      image: 'assets/images/user4.jpg',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.artistID === '103'
-      ),
-    },
-    {
-      artistID: "104",
-      artistName: 'Francis Sagun',
-      bio: 'Mastering the art of sculpture, Sophia explores form and texture, creating captivating three-dimensional artworks.',
-      image: 'assets/images/user6.jpg',
-      artworks: this.artworks.filter(
-        (artwork) => artwork.artistID === '104'
-      ),
-    },
-  ];
+      price: 1200,
+      status: 'available',
+      isAuction: 0,
+      auction: []
+    }]
+    mediums = [
+      {
+        mediumID: '1',
+        mediumType: 'Charcoal',
+        image: 'assets/images/charcoal.jpg',
+        description: 'A beautiful artwork created using charcoal painting.',
+        remarks: "null",
+      },
+      {
+        mediumID: '2',
+        mediumType: 'Oil Painting',
+        image: 'assets/images/oil-paint.jpg',
+        description: 'An amazing oil painting capturing the essence of nature.',
+        remarks: "null",
+      },
+      {
+        mediumID: '3',
+        mediumType: 'Digital Art',
+        image: 'assets/images/digital-art.jpg',
+        description:
+          'Innovative digital artwork showcasing creativity through technology.',
+        remarks: "null",
+      },
+      {
+        mediumID: '4',
+        mediumType: 'Acrylic',
+        image: 'assets/images/acrylic.jpg',
+        description: 'Vibrant acrylic painting that brings life to the canvas.',
+        remarks: "null",
+      },
+      {
+        mediumID: '5',
+        mediumType: 'Sculpture',
+        image: 'assets/images/sculpture.jpg',
+        description: 'A captivating sculpture that explores form and texture.',
+        remarks: "null",
+      },
+      {
+        mediumID: '6',
+        mediumType: 'Watercolor',
+        image: 'assets/images/watercolor.jpg',
+        description: 'A watercolor.',
+        remarks: "null",
+      },
+    ];
+  
+    artists = [
+      {
+        artistID: "101",
+        artistName: 'Gabriel Corpuz',
+        bio: 'A passionate artist with a love for traditional art mediums. Specializes in charcoal and oil painting.',
+        image: 'assets/images/user3.jpg',
+        remarks: "null",
+      },
+      {
+        artistID: "102",
+        artistName: 'Vhee Valencia',
+        bio: 'An innovative artist exploring the realm of digital art. Pushing boundaries with creativity and technology.',
+        image: 'assets/images/user2.jpg',
+        remarks: "null",
+      },
+      {
+        artistID: "103",
+        artistName: 'Leandro Sebastian',
+        bio: 'Expressing vibrancy through acrylics and bringing life to the canvas. Captivating viewers with color and form.',
+        image: 'assets/images/user4.jpg',
+        remarks: "null",
+      },
+      {
+        artistID: "104",
+        artistName: 'Francis Sagun',
+        bio: 'Mastering the art of sculpture, Sophia explores form and texture, creating captivating three-dimensional artworks.',
+        image: 'assets/images/user6.jpg',
+        remarks: "null",
+      },
+    ];
 
   allArtworks: any[] = [
     {
@@ -472,4 +456,8 @@ export class ApiService {
   getFixedPriceArtworks(): any[] {
     return this.artworks.filter((artwork) => !artwork.isAuction);
   }
+  getArtistProfile(artistId: string): any {
+    return this.artists.find(artist => artist.artistID === artistId);
+  }
+  
 }

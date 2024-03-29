@@ -40,9 +40,9 @@
   </ion-grid>
 
   <ion-list *ngIf="!isLoading"><br>
-    <ion-item-group *ngIf="artworks?.length > 0">
+    <ion-item-group *ngIf="artMedium?.length > 0">
       <app-artwork
-        *ngFor="let artwork of data.artworks"
+        *ngFor="let artwork of artMedium"
         [artwork]="artwork"
         [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
       ></app-artwork>

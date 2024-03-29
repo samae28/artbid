@@ -37,18 +37,16 @@ export class ArtworkComponent implements OnInit {
   }
   
 
-  getHighestBid(): string {
-    return this.getHighestBidAmount(this.artwork);
-  }
-
-  private getHighestBidAmount(artwork: any): string {
-    if (!artwork.bids || artwork.bids.length === 0) {
-      return 'No bids yet';
+  getHighestBid(artwork: any): string {
+    if (artwork.isAuction && artwork.auction.length > 0) {
+      const bids = artwork.auction[0].bids; // Assuming only one auction for simplicity
+      if (bids && bids.length > 0) {
+        // Sort bids by bidAmount in descending order
+        const sortedBids = bids.sort((a, b) => parseFloat(b.bidAmount) - parseFloat(a.bidAmount));
+        return sortedBids[0].bidAmount; // Return the highest bid amount
+      }
     }
-
-    const highestBid = Math.max(...artwork.bids.map((bid) => bid.amount));
-
-    return `P${highestBid}`;
+    return 'N/A'; // Return 'N/A' if no bids or not an auction artwork
   }
 
   isAuction(): boolean {

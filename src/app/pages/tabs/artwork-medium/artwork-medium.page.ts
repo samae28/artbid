@@ -16,8 +16,6 @@ export class ArtworkMediumPage implements OnInit {
   artMedium: any[] = [];
   @Input() artwork: any;
   isLoading: boolean = false;
-  auctionArtworks = []; 
-  fixedPriceArtworks = []; 
 
   constructor(
     private navCtrl: NavController,
@@ -26,8 +24,6 @@ export class ArtworkMediumPage implements OnInit {
     private router: Router,
     private api: ApiService
   ) {
-    this.auctionArtworks = this.api.getAuctionArtworks();
-    this.fixedPriceArtworks = this.api.getFixedPriceArtworks();
   }
 
   ngOnInit() {
@@ -40,6 +36,7 @@ export class ArtworkMediumPage implements OnInit {
       this.id = paramMap.get('artWorkMediumId');
       console.log('id: ', this.id);
       this.getArtWorkMedium();
+      this.getArtMedium()
     });
     this.isLoading = true;
 
@@ -49,20 +46,19 @@ export class ArtworkMediumPage implements OnInit {
 
       this.data = this.mediums.find((x) => x.mediumID === this.id);
 
-      // this.auctionArtworks = this.artworks.filter(artwork => artwork.isAuction);
-      // this.fixedPriceArtworks = this.artworks.filter(artwork => !artwork.isAuction);
-      // this.data = this.artworks.filter(artwork => !artwork.isAuction);
-
       this.isLoading = false;
       this.cdr.detectChanges();
     }, 2000);
   }
 
+  getArtMedium() {
+    this.artMedium = this.api.artworks.filter(artwork => artwork.mediumID === this.id && !artwork.isAuction);
+  }
   getArtWorkMedium() {
     this.mediums = this.api.mediums;
 
     console.log('getArtWorkMedium started');
-    this.data = this.mediums.find((x) => x.mediumID === this.id);
+    this.data = this.mediums.find((x) => (x.mediumID === this.id) );
     console.log('artMediumName:', this.data);
   }
 }

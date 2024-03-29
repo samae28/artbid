@@ -13,6 +13,7 @@ export class ArtMediumComponent implements OnInit {
   ngOnInit() {
     console.log('Artwork array:', this.artwork);
   }
+  
   getHighestBid(): string {
     if (!this.artwork.bids || this.artwork.bids.length === 0) {
       return 'No bids yet';

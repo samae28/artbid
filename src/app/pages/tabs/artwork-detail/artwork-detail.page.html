@@ -13,19 +13,20 @@
   <ion-card class="custom-ion-card">
     <ion-card class="custom-card-detail">
       <ion-row>
-        <ion-col size="5">
+        <ion-col size="5" *ngIf="artwork.isAuction && countdown !== 'Starting Soon' && countdown !== 'Already Ended'">
           <ion-card-header>
             <ion-card-subtitle class="subStyle">Highest Bid</ion-card-subtitle>
           </ion-card-header>
           <ion-card class="card-title-detail">
             <ion-card-header class="custom-header">
-              <ion-card-subtitle *ngIf="artwork.isAuction"
-                >P {{artwork.currentBid}}</ion-card-subtitle
-              >
+              <ion-card-subtitle>
+                P {{ getHighestBid() }}
+              </ion-card-subtitle>
             </ion-card-header>
           </ion-card>
         </ion-col>
-        <ion-col size="7">
+        
+        <ion-col>
           <ion-card-header>
             <ion-card-subtitle class="subStyle"
               >Auction Ends In</ion-card-subtitle
@@ -55,9 +56,9 @@
           <ion-list lines="none">
             <ion-item>
               <ion-thumbnail slot="start">
-                <img [alt]="getArtMedium(artwork?.mediumID).artMediumName" [src]="getArtMedium(artwork?.mediumID).image" />
+                <img [alt]="getArtMedium(artwork?.mediumID).mediumType" [src]="getArtMedium(artwork?.mediumID).image" />
               </ion-thumbnail>
-              <ion-label>{{getArtMedium(artwork?.mediumID).artMediumName}}</ion-label>
+              <ion-label>{{getArtMedium(artwork?.mediumID).mediumType}}</ion-label>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -65,6 +66,13 @@
       <ion-card-title>{{artwork.title}}</ion-card-title>
     </ion-card-header>
     <ion-card-content> {{artwork.description}} </ion-card-content>
+   
+    <ion-list *ngIf="artwork.bids.length > 0">
+      <ion-item *ngFor="let bid of artwork.bids">
+        <ion-label>{{ bid.bidder }}</ion-label>
+        <ion-input [value]="bid.amount" disabled></ion-input>
+      </ion-item>
+    </ion-list>
 
     <ion-item>
       <ion-label position="floating">Enter Value</ion-label>
@@ -73,5 +81,6 @@
     <ion-button expand="block" *ngIf="artwork.isAuction" (click)="placeBid()"
       >Place Bid</ion-button
     >
+    
   </ion-card>
 </ion-content>

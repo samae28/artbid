@@ -13,42 +13,49 @@
     <ion-segment-button value="past"> Past </ion-segment-button>
   </ion-segment>
 
+  <!-- Current Auctions -->
   <div *ngIf="selectedSegment === 'current'">
+    <br><br><br><br>
     <ion-list *ngIf="!isLoading">
-      <br><br><br>
-      <ion-item-group *ngIf="artworks?.length > 0">
+      <ion-item-group *ngIf="currentAuctions?.length > 0">
         <app-auction-current
-          *ngFor="let artwork of artworks"
+          *ngFor="let artwork of currentAuctions"
           [artwork]="artwork"
           [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
         ></app-auction-current>
       </ion-item-group>
+      <ion-note *ngIf="currentAuctions?.length === 0">No current auctions.</ion-note>
     </ion-list>
   </div>
 
+  <!-- Upcoming Auctions -->
   <div *ngIf="selectedSegment === 'upcoming'">
+    <br><br><br><br>
     <ion-list *ngIf="!isLoading">
-      <br><br><br>
-      <ion-item-group *ngIf="artworks?.length > 0">
+      <ion-item-group *ngIf="upcomingAuctions?.length > 0">
         <app-auction-upcoming
-          *ngFor="let artwork of artworks"
+          *ngFor="let artwork of upcomingAuctions"
           [artwork]="artwork"
           [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
         ></app-auction-upcoming>
       </ion-item-group>
+      <ion-note *ngIf="upcomingAuctions?.length === 0">No upcoming auctions.</ion-note>
     </ion-list>
   </div>
 
+  <!-- Past Auctions -->
   <div *ngIf="selectedSegment === 'past'">
+    <br><br><br><br>
     <ion-list *ngIf="!isLoading">
-      <br><br><br>
-      <ion-item-group *ngIf="artworks?.length > 0">
+      <ion-item-group *ngIf="pastAuctions?.length > 0">
         <app-auction-past
-          *ngFor="let artwork of artworks"
+          *ngFor="let artwork of pastAuctions"
           [artwork]="artwork"
           [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
         ></app-auction-past>
       </ion-item-group>
+      <ion-note *ngIf="pastAuctions?.length === 0">No past auctions.</ion-note>
     </ion-list>
   </div>
 </ion-content>
+
