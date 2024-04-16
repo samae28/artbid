@@ -9,11 +9,12 @@ import { ApiService } from 'src/app/services/api/api.service';
   styleUrls: ['./artwork-medium.page.scss'],
 })
 export class ArtworkMediumPage implements OnInit {
+  
+  id: any; //use to store paramMap.get('artistProfileId')
+  mediumArtwork: any = {}; // used to store the artist's profile data fetched from an API based on the artist's ID.
+  artMedium: any[] = [];
   artworks: any[] = [];
   mediums: any[] = [];
-  id: any;
-  data: any = {};
-  artMedium: any[] = [];
   @Input() artwork: any;
   isLoading: boolean = false;
 
@@ -27,38 +28,41 @@ export class ArtworkMediumPage implements OnInit {
   }
 
   ngOnInit() {
+    //checks if an 'artWorkMediumId' exists, goes back if it doesn't, and then retrieves the artMedium and MediumArtworks
     this.route.paramMap.subscribe((paramMap) => {
-      console.log('data: ', paramMap);
+      console.log('mediumArtwork: ', paramMap);
       if (!paramMap.has('artWorkMediumId')) {
         this.navCtrl.back();
         return;
       }
       this.id = paramMap.get('artWorkMediumId');
       console.log('id: ', this.id);
-      this.getArtWorkMedium();
-      this.getArtMedium()
+      this.getMediumArtWork();
+      // this.getArtMedium();
     });
+
     this.isLoading = true;
 
-    setTimeout(() => {
-      this.artworks = this.api.artworks;
-      this.mediums = this.api.mediums;
-
-      this.data = this.mediums.find((x) => x.mediumID === this.id);
-
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    }, 2000);
-  }
-
-  getArtMedium() {
-    this.artMedium = this.api.artworks.filter(artwork => artwork.mediumID === this.id && !artwork.isAuction);
-  }
-  getArtWorkMedium() {
+    this.artworks = this.api.artworks;
     this.mediums = this.api.mediums;
-
-    console.log('getArtWorkMedium started');
-    this.data = this.mediums.find((x) => (x.mediumID === this.id) );
-    console.log('artMediumName:', this.data);
+    this.artworks = this.api.artworks.map(art => art.isAuction);
   }
+
+    // getArtMedium() {
+    //   this.artMedium = this.api.artworks.filter(artwork => artwork.mediumID === this.id && !artwork.isAuction);
+    // }
+
+    getMediumArtWork() {
+      this.mediums = this.api.mediums;
+      let mediumArtwork: any = this.mediums.filter((x) => x.mediumID === this.id);
+      this.mediumArtwork = mediumArtwork [0];
+      this.artMedium = this.api.artworks.filter(artwork => artwork.mediumID === this.id && !artwork.isAuction);
+      console.log('mediumName:', this.mediumArtwork);
+    } 
+    getBackHref(): string {
+      const currentUrl = this.router.url;
+      return currentUrl.includes('segment=medium')
+        ? '/tabs/browse?segment=medium'
+        : '/tabs/browse?segment=medium';
+    }
 }

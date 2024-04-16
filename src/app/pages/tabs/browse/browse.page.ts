@@ -9,7 +9,6 @@ import { ApiService } from 'src/app/services/api/api.service';
 })
 export class BrowsePage implements OnInit {
   selectedSegment: 'medium' | 'artist' = 'medium';
-  medium: any[] = [];
   mediums: any[] = [];
   artists: any[] = [];
   artworks: any[] = [];
@@ -36,6 +35,12 @@ export class BrowsePage implements OnInit {
   navigateToArtistProfile(artistId: string) {
     this.router.navigate(['/tabs/browse/artist-profile', artistId], {
       queryParams: { segment: 'artist' },
+    });
+  }
+
+  navigateToArtMedium(mediumID: string) {
+    this.router.navigate(['/tabs/browse/artwork-medium', mediumID], {
+      queryParams: { segment: 'medium' },
     });
   }
 

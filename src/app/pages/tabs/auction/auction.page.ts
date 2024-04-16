@@ -74,6 +74,5 @@ export class AuctionPage implements OnInit {
       return false;
     });
   }
-  
 }
 

@@ -10,8 +10,9 @@ export class ArtworkComponent implements OnInit {
   @Input() artwork: any;
   artists: any[] = [];
   id: any;
-  mediums: any[] = []
-  constructor(private api: ApiService) {}
+  mediums: any[] = [];
+  constructor(
+    private api: ApiService) {}
 
   ngOnInit() {
     console.log('Artwork array:', this.artwork);
@@ -21,10 +22,10 @@ export class ArtworkComponent implements OnInit {
     this.mediums = this.api.mediums;
   }
 
-  getArtistName(artistID: any): string {
+  getData(artistID: any): string {
     console.log('Artists:', this.artists);
     console.log('ArtistID to find:', artistID);
-    
+
     if (this.artists) {
       const artist = this.artists.find(
         (artist) => artist.artistID.toString() === artistID.toString()
@@ -52,4 +53,7 @@ export class ArtworkComponent implements OnInit {
   isAuction(): boolean {
     return this.artwork.isAuction;
   }
+
+ 
+
 }

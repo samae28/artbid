@@ -8,18 +8,20 @@
 </ion-header>
 
 <ion-content>
-  <div class="profile-header">
-    <ion-col size="5 ">
-      <ion-avatar>
-        <img [alt]="data.artistName" [src]="data.image" />
-      </ion-avatar>
-    </ion-col>
-    <ion-col size="7">
-      <ion-label>
-        <h2>{{ data.artistName }}</h2>
-      </ion-label>
-    </ion-col>
-  </div>
+  <ion-grid *ngIf="artistProfile?.artistName">
+    <ion-row class="profile-header">
+        <ion-col size="5 ">
+          <ion-avatar>
+            <img [alt]="artistProfile.artistName" [src]="artistProfile.image" />
+          </ion-avatar>
+        </ion-col>
+        <ion-col size="7">
+          <ion-label>
+            <h2>{{ artistProfile.artistName }}</h2>
+          </ion-label>
+        </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <ion-segment (ionSelect)="changeSegment($event)" [ngModel]="selectedSegment">
     <ion-segment-button value="artworks"> Artworks </ion-segment-button>
@@ -34,20 +36,20 @@
         <ng-container *ngFor="let artwork of artistArtworks">
           <app-artwork
             [artwork]="artwork"
-            [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
+
             *ngIf="artwork.mediumID === medium.mediumID"
           ></app-artwork>
         </ng-container>
       </ion-item-group>
     </ion-list>
   </div>
-
+<!-- [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]" -->
   <div *ngIf="selectedSegment === 'biography'">
     <br><br><br>
     <ion-card>
       <ion-card-header> Artist Biography </ion-card-header>
       <ion-card-content>
-        <p>{{ data.bio }}</p>
+        <p>{{ artistProfile.bio }}</p>
       </ion-card-content>
     </ion-card>
   </div>
@@ -61,3 +63,22 @@
     </ion-card>
   </div>
 </ion-content>
+
+<ion-footer color="black">
+  <ion-toolbar>
+    <ion-label>
+      <h4>
+        1 Item | P 1200
+      </h4>
+      <ion-text>
+        <p>
+          Extra charges may apply
+        </p>
+      </ion-text>
+    </ion-label>
+    <ion-button color="#fff" slot="end" fill="clear">
+      <ion-icon slot="end" name="basket-outline"></ion-icon>
+      VIEW CART
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

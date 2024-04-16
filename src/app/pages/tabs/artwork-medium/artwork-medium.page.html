@@ -1,6 +1,5 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <!-- <ion-title>{{data?.artMediumName}}</ion-title> -->
 
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="'tabs/browse'"></ion-back-button>
@@ -9,10 +8,10 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid *ngIf="data?.artMediumName" class="borderBottom">
+  <ion-grid *ngIf="mediumArtwork?.mediumType" class="borderBottom">
     <ion-row class="ion-padding-horizontal" class="dashedBorderBottom">
-      <h1>{{data?.artMediumName}}</h1>
-      <ion-text><p>{{data?.description}}</p></ion-text>
+      <h1>{{mediumArtwork?.mediumType}}</h1>
+      <ion-text><p>{{mediumArtwork?.description}}</p></ion-text>
     </ion-row>
     <ion-row>
       <ion-col size="4">
@@ -40,15 +39,30 @@
   </ion-grid>
 
   <ion-list *ngIf="!isLoading"><br>
-    <ion-item-group *ngIf="artMedium?.length > 0">
+    <ion-item-group *ngIf="artworks?.length > 0">
       <app-artwork
         *ngFor="let artwork of artMedium"
         [artwork]="artwork"
-        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
+        
       ></app-artwork>
     </ion-item-group>
   </ion-list>
 
+    <ion-list *ngFor="let medium of mediums">
+      
+      <ion-item-group>
+        <ng-container *ngFor="let artwork of artMedium">
+          <app-artwork
+            [artwork]="artwork"
+
+            *ngIf="artwork.mediumID === medium.mediumID"
+          ></app-artwork>
+        </ng-container>
+      </ion-item-group>
+    </ion-list>
+
+
+<!-- [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]" -->
   <!-- Fixed Price Section -->
   <!-- <ion-list *ngIf="!isLoading">
     <ion-list-header class="ion-margin-bottom">
@@ -71,7 +85,7 @@
     </ion-list-header>
     <ion-item-group *ngIf="(artworks?.length + fixedPriceArtworks?.length) > 0">
       <app-artwork 
-        *ngFor="let artwork of data.artworks.concat(fixedPriceArtworks)"
+        *ngFor="let artwork of mediumArtwork.artworks.concat(fixedPriceArtworks)"
         [artwork]="artwork" 
         [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"></app-artwork>
     </ion-item-group>

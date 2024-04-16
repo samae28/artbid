@@ -48,11 +48,11 @@ export class ArtworkDetailPage implements OnInit {
     });
   }
 
+
   getArtist(artistID: any): any {
-    console.log('get artists');
     console.log('Artists:', this.artists);
     console.log('ArtistsID to find:', artistID);
-
+  
     if (this.artists) {
       const artist = this.artists.find(
         (artist) => artist.artistID.toString() === artistID.toString()
@@ -65,11 +65,9 @@ export class ArtworkDetailPage implements OnInit {
   }
 
   getArtMedium(mediumID: any): any {
-    console.log('get art');
-
     console.log('Mediums:', this.mediums);
     console.log('MediumID to find:', mediumID);
-
+  
     if (this.mediums) {
       const medium = this.mediums.find(
         (medium) => medium.mediumID.toString() === mediumID.toString()
@@ -80,18 +78,16 @@ export class ArtworkDetailPage implements OnInit {
       return { artMediumName: 'Unknown Medium' };
     }
   }
+  
+
+
 
   navigateToArtistProfile(artistId: string): void {
     this.router.navigate(['/tabs/artist-profile', artistId]);
   }
 
-  navigate() {
-    this.router.navigate(['/tabs/artist-profile']);
-  }
-
-  
-  ngOnDestroy() {
-    this.timerSubscription.unsubscribe();
+  navigate(){
+    this.router.navigate(['/tabs/artist-profile'])
   }
 
   startCountdown() {
@@ -102,13 +98,8 @@ export class ArtworkDetailPage implements OnInit {
         map((currentTime) => this.calculateTimeRemaining(currentTime)),
         takeWhile((timeRemaining) => timeRemaining !== '00:00:00')
       )
-      .subscribe((timeRemaining) => {
-        // Update the countdown based on the calculated time remaining
-        this.countdown = timeRemaining;
-      });
+      .subscribe((timeRemaining) => (this.countdown = timeRemaining));
   }
-
-  
 
   getArtWorks() {
     this.artworks = this.api.artworks;
@@ -136,40 +127,51 @@ export class ArtworkDetailPage implements OnInit {
   }
 
   placeBid() {
-    const newBid = parseFloat(this.userBid[0]);
-    if (!isNaN(newBid) && newBid > this.artwork.currentBid) {
-      this.artwork.bids.push({ bidder: 'You', amount: newBid });
-      this.artwork.currentBid = newBid;
-      this.userBid = [];
+    // Add logic to handle placing a bid
+    if (this.userBid > this.artwork.currentBid) {
+      // Update the artwork object with the new bid
+      this.artwork.bids.push({ bidder: 'You', amount: this.userBid });
+
+      // Update the current highest bid
+      this.artwork.currentBid = this.userBid;
     } else {
-      console.log(
-        'Your bid must be a valid number higher than the current highest bid.'
-      );
+      // Display an error message or take appropriate action
+      console.log('Your bid must be higher than the current highest bid.');
     }
   }
- 
-  
-  getHighestBid(): number {
-    let highestBid = 0;
-    if (this.artwork.isAuction && this.artwork.auction.length > 0) {
-      this.artwork.auction.forEach((auction) => {
-        if (auction.bids && auction.bids.length > 0) {
-          auction.bids.forEach((bid) => {
-            const bidAmount = parseFloat(bid.bidAmount);
-            if (bidAmount > highestBid) {
-              highestBid = bidAmount;
-            }
-          });
-        }
-      });
-    }
-    return highestBid;
+
+  getCurrentHighestBid(): number {
+    // Extract bid amounts from the bids array
+    // Explicitly specify the type of the bid parameter
+    const bidAmounts = this.artwork.bids.map(
+      (bid: { amount: number }) => bid.amount
+    );
+
+    // Find the maximum bid amount using the spread operator
+    const maxBid = Math.max(...bidAmounts);
+
+    return maxBid || 0; // Return 0 if there are no bids yet
   }
-  
+
   toggleInputField() {
+    // Toggle the value of showInputField
     this.showInputField = !this.showInputField;
+
+    // Clear userInput when hiding the input field
     if (!this.showInputField) {
       this.userInput = '';
     }
+  }
+
+  // toggleInputAndPlaceBid() {
+  //   if (this.showInputField && this.artwork.isAuction) {
+  //     this.placeBid();
+  //   } else {
+  //     this.toggleInputField();
+  //   }
+  // }
+
+  ngOnDestroy() {
+    this.timerSubscription.unsubscribe();
   }
 }

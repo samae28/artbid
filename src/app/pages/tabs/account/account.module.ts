@@ -1,3 +1,4 @@
+import { EditProfileComponent } from './../../../components/edit-profile/edit-profile.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,6 @@ import { AccountPage } from './account.page';
     IonicModule,
     AccountPageRoutingModule
   ],
-  declarations: [AccountPage]
+  declarations: [AccountPage, EditProfileComponent]
 })
 export class AccountPageModule {}

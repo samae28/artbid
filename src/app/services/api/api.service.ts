@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
+
+  constructor(
+    private adb: AngularFirestore
+  ) {}
+
+  collection(path) {
+    return this.adb.collection(path);
+  }
+
   banners = [
     { banner: 'assets/images/image1.png' },
     { banner: 'assets/images/image2.png' },
@@ -447,7 +457,75 @@ export class ApiService {
     },
   ];
 
-  constructor() {}
+  orders = [      
+    {
+      address: {
+        address: "Pag-asa, Olongapo City, Philippines", 
+        house: "dsgd", id: "cLQdnS8YXk5HTDfM3UQC", 
+        landmark: "fdgs", 
+        lat: 26.108991978867923, 
+        lng: 91.79069981213378, 
+        title: "yui", 
+        user_id: "1" }, 
+      deliveryCharge: 20,
+      grandTotal: 540.00,
+      id: "5aG0RsPuze8NX00B7uRP",
+      order: [
+        {
+          category_id: "e0", 
+          cover: "assets/imgs/salad.jpg", 
+          desc: "Great in taste", 
+          id: "i2", 
+          name: "Caprese Salad", 
+          price: 200, 
+          rating: 0, 
+          status: true, 
+          uid: "12wefdefsdss", 
+          variation: false, 
+          veg: true, 
+          quantity: 1},
+      ],
+      paid: "COD",  
+      restaurant: 
+      // {address: "Christan Basti, India",  city: "909090567", closeTime: "21:00", cover: "", cuisines: ["Caribbean food", "North Indian", "Vietnamese"], delivery_time: 25, description: "dd", email: "DosaPlaza@gmail.com", latitude: 26.1286243, longitude: 91.8012675, uid: "12wefdefsdss", isClose: true, name: "DosaPlaza", openTime: "07:00", phone: 6619563867, price: 27, rating: 4.7, short_name: "stayfit", status: "open", totalRating: 13},
+      {
+        artworkID: 'dsjahfdkljdfk',
+        title: 'Celestial Sculpture',
+        description: 'A celestial-inspired sculpture that captivates the imagination.',
+        cover: 'assets/images/art2.jpg',
+        artistID: '103',
+        mediumID: '2',
+      },
+      restaurant_id: "12wefdefsdss",  
+      status: "created",
+      time: "Apr 11, 2024 12:00 PM",
+      total: 1200.00,
+      user_id: "1"
+    },
+  ];
+
+  addresses= [     
+    {
+      address: "Fancy Bazaar, India", 
+      house: "2nd Floor", 
+      id: "7Kox63KlggTvV7ebRKar", 
+      landmark: "Fancy Bazar", 
+      lat: 26.1830738, 
+      lng: 91.74049769999999, 
+      title: "Fancy", 
+      user_id: "1"},
+    {address: "Kanuat palace, India", house: "Ground Floor", id: "8Kox63KlggTvV7ebRKar", landmark: "Bazar", lat: 26.1830738, lng: 91.74049769999999, title: "Work", user_id: "1"},
+    {
+      address: "Delhi, India", 
+      house: "2nd Floor", 
+      id: "7Kox63KlggTvV7ebRDelhi", 
+      landmark: "Delhi", 
+      lat: 28.649944693035188, 
+      lng: 77.23961776224988,
+      title: "Delhi", 
+      user_id: "1"
+    }
+  ];
 
   getAuctionArtworks(): any[] {
     return this.artworks.filter((artwork) => artwork.isAuction);
@@ -456,8 +534,7 @@ export class ApiService {
   getFixedPriceArtworks(): any[] {
     return this.artworks.filter((artwork) => !artwork.isAuction);
   }
-  getArtistProfile(artistId: string): any {
-    return this.artists.find(artist => artist.artistID === artistId);
+  getArtistProfile(artistID: string): any {
+    return this.artists.find(artist => artist.artistID === artistID);
   }
-  
 }

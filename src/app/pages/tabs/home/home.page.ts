@@ -15,6 +15,7 @@ export class HomePage implements OnInit {
   
   auctionArtworks = []; 
   fixedPriceArtworks = [];
+  artists: any[] = [];
 
   constructor(
     private cdr: ChangeDetectorRef, 
@@ -24,8 +25,11 @@ export class HomePage implements OnInit {
       this.fixedPriceArtworks = this.api.getFixedPriceArtworks();
     }
 
-  navigateToAuctionSegment(segment: string): void {
+  navigateToAuction(segment: string): void {
     this.router.navigate(['/tabs/auction'], { queryParams: { segment } });
+  }
+  navigateToBrowse(segment: string): void {
+    this.router.navigate(['/tabs/browse'], { queryParams: { segment } });
   }  
 
   ngOnInit() {
@@ -34,10 +38,8 @@ export class HomePage implements OnInit {
     setTimeout(() => {
       this.banners = this.api.banners;
       this.artworks = this.api.artworks;
-
-      // this.auctionArtworks = this.artworks.filter(artwork => artwork.isAuction);
-      // this.fixedPriceArtworks = this.artworks.filter(artwork => !artwork.isAuction);
-
+      this.artists = this.api.artists;
+      
       this.isLoading = false;
       this.cdr.detectChanges();
     }, 2000);

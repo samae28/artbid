@@ -29,6 +29,6 @@
   <app-artwork
     *ngFor="let artwork of artworks"
     [artwork]="artwork"
-    [routerLink]="['/', 'tabs', 'artwork-detail', artwork.uid]"
+    [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
   ></app-artwork>
 </ion-content>

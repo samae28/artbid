@@ -10,6 +10,9 @@ import { AuctionPastComponent } from './auction-past/auction-past.component';
 import { BrowseArtistComponent } from './browse-artist/browse-artist.component';
 import { BrowseMediumComponent } from './browse-medium/browse-medium.component';
 import { ArtMediumComponent } from './art-medium/art-medium.component';
+import { ArtistsComponent } from './artists/artists.component';
+import { OrdersComponent } from './orders/orders.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,8 @@ import { ArtMediumComponent } from './art-medium/art-medium.component';
     BrowseArtistComponent,
     BrowseMediumComponent,
     ArtMediumComponent,
+    ArtistsComponent,
+    OrdersComponent
   ],
   imports: [CommonModule, IonicModule],
   exports: [
@@ -34,6 +39,8 @@ import { ArtMediumComponent } from './art-medium/art-medium.component';
     BrowseArtistComponent,
     BrowseMediumComponent,
     ArtMediumComponent,
+    ArtistsComponent,
+    OrdersComponent
   ],
 })
 export class ComponentsModule {}

@@ -1,0 +1,20 @@
+
+
+<ion-item lines="none">
+  <ion-thumbnail>
+    <img [src]="artist?.image ? artist.image : 'assets/images/default.jpg'" alt="">
+
+  </ion-thumbnail>
+  <ion-row>
+    <ion-col>
+      <ion-label>
+        <h4>{{ artist.artistName }}</h4>
+        <!-- <ion-text color="medium">
+          <p class="pStyle">{{ artist.birthDate }}</p>
+        </ion-text> -->
+      </ion-label>
+    </ion-col>
+  </ion-row>
+  <ion-button (click)="followArtist()">Follow</ion-button>
+
+</ion-item>
