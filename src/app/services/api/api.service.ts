@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +15,132 @@ export class ApiService {
     return this.adb.collection(path);
   }
 
+  randomString() {
+    const id = Math.floor(100000000 + Math.random() * 900000000);
+    return id.toString();
+  }
+
+  // banner apis
+  async addBanner(data) {
+    try {
+      const id = this.randomString();
+      data.id = id;
+      await this.collection('banners').doc(id).set(data);
+    } catch(e) {
+      console.log(e);
+      throw(e);
+    }
+  }
+
+  async getBanners() {
+    try {
+      const banners = await this.collection('banners').get().pipe(
+        switchMap(async(data: any) => {
+          let bannerData = await data.docs.map(element => {
+            const item = element.data();
+            return item;
+          });
+          console.log(bannerData);
+          return bannerData;
+        })
+      ).toPromise();
+      console.log(banners);
+      return banners;
+    } catch(e) {
+      throw(e);
+    }
+  }
+
+  async getMediums() {
+    try {
+      const mediums = await this.collection('mediums').get().pipe(
+        switchMap(async(data: any) => {
+          let mediumData = await data.docs.map(element => {
+            const item = element.data();
+            return item;
+          });
+          console.log(mediumData);
+          return mediumData;
+        })
+      ).toPromise();
+      console.log(mediums);
+      return mediums;
+    } catch(e) {
+      throw(e);
+    }
+  }
+
+  async getArtwork() {
+    try {
+      const artworks = await this.collection('artworks').get().pipe(
+        switchMap(async(data: any) => {
+          let artworkData = await data.docs.map(element => {
+            const item = element.data();
+            return item;
+          });
+          console.log(artworkData);
+          return artworkData;
+        })
+      ).toPromise();
+      console.log(artworks);
+      return artworks;
+    } catch(e) {
+      throw(e);
+    }
+  }
+
   banners = [
     { banner: 'assets/images/image1.png' },
     { banner: 'assets/images/image2.png' },
     { banner: 'assets/images/image3.png' },
   ];
+
+  mediums = [
+    {
+      mediumID: '1',
+      mediumType: 'Charcoal',
+      image: 'assets/images/charcoal.jpg',
+      description: 'A beautiful artwork created using charcoal painting.',
+      remarks: "null",
+    },
+    {
+      mediumID: '2',
+      mediumType: 'Oil Painting',
+      image: 'assets/images/oil-paint.jpg',
+      description: 'An amazing oil painting capturing the essence of nature.',
+      remarks: "null",
+    },
+    {
+      mediumID: '3',
+      mediumType: 'Digital Art',
+      image: 'assets/images/digital-art.jpg',
+      description:
+        'Innovative digital artwork showcasing creativity through technology.',
+      remarks: "null",
+    },
+    {
+      mediumID: '4',
+      mediumType: 'Acrylic',
+      image: 'assets/images/acrylic.jpg',
+      description: 'Vibrant acrylic painting that brings life to the canvas.',
+      remarks: "null",
+    },
+    {
+      mediumID: '5',
+      mediumType: 'Sculpture',
+      image: 'assets/images/sculpture.jpg',
+      description: 'A captivating sculpture that explores form and texture.',
+      remarks: "null",
+    },
+    {
+      mediumID: '6',
+      mediumType: 'Watercolor',
+      image: 'assets/images/watercolor.jpg',
+      description: 'A watercolor.',
+      remarks: "null",
+    },
+  ];
+
 
   artworks = [
     {
@@ -267,52 +389,7 @@ export class ApiService {
       isAuction: 0,
       auction: []
     }]
-    mediums = [
-      {
-        mediumID: '1',
-        mediumType: 'Charcoal',
-        image: 'assets/images/charcoal.jpg',
-        description: 'A beautiful artwork created using charcoal painting.',
-        remarks: "null",
-      },
-      {
-        mediumID: '2',
-        mediumType: 'Oil Painting',
-        image: 'assets/images/oil-paint.jpg',
-        description: 'An amazing oil painting capturing the essence of nature.',
-        remarks: "null",
-      },
-      {
-        mediumID: '3',
-        mediumType: 'Digital Art',
-        image: 'assets/images/digital-art.jpg',
-        description:
-          'Innovative digital artwork showcasing creativity through technology.',
-        remarks: "null",
-      },
-      {
-        mediumID: '4',
-        mediumType: 'Acrylic',
-        image: 'assets/images/acrylic.jpg',
-        description: 'Vibrant acrylic painting that brings life to the canvas.',
-        remarks: "null",
-      },
-      {
-        mediumID: '5',
-        mediumType: 'Sculpture',
-        image: 'assets/images/sculpture.jpg',
-        description: 'A captivating sculpture that explores form and texture.',
-        remarks: "null",
-      },
-      {
-        mediumID: '6',
-        mediumType: 'Watercolor',
-        image: 'assets/images/watercolor.jpg',
-        description: 'A watercolor.',
-        remarks: "null",
-      },
-    ];
-  
+
     artists = [
       {
         artistID: "101",

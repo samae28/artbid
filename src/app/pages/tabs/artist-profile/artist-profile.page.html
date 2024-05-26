@@ -23,13 +23,13 @@
     </ion-row>
   </ion-grid>
 
-  <ion-segment (ionSelect)="changeSegment($event)" [ngModel]="selectedSegment">
+  <!-- <ion-segment (ionSelect)="changeSegment($event)" [ngModel]="selectedSegment">
     <ion-segment-button value="artworks"> Artworks </ion-segment-button>
     <ion-segment-button value="biography"> Biography </ion-segment-button>
     <ion-segment-button value="reviews"> Reviews </ion-segment-button>
-  </ion-segment>
-
-  <div *ngIf="selectedSegment === 'artworks'">
+  </ion-segment> -->
+<div>
+  <!-- <div *ngIf="selectedSegment === 'artworks'"> -->
     <ion-list *ngFor="let medium of mediums">
       <ion-list-header>{{ medium.mediumType }}</ion-list-header>
       <ion-item-group>
@@ -44,7 +44,7 @@
     </ion-list>
   </div>
 <!-- [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]" -->
-  <div *ngIf="selectedSegment === 'biography'">
+  <!-- <div *ngIf="selectedSegment === 'biography'">
     <br><br><br>
     <ion-card>
       <ion-card-header> Artist Biography </ion-card-header>
@@ -52,8 +52,8 @@
         <p>{{ artistProfile.bio }}</p>
       </ion-card-content>
     </ion-card>
-  </div>
-  <div *ngIf="selectedSegment === 'reviews'">
+  </div> -->
+  <!-- <div *ngIf="selectedSegment === 'reviews'">
     <br><br><br> 
     <ion-card>
       <ion-card-header> Reviews </ion-card-header>
@@ -61,7 +61,7 @@
         <p></p>
       </ion-card-content>
     </ion-card>
-  </div>
+  </div> -->
 </ion-content>
 
 <ion-footer color="black">

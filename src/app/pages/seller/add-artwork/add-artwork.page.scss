@@ -1,0 +1,10 @@
+.icon-inner, .ionicon, svg {
+    display: none !important;
+}
+.itemImage {
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 1vh;
+    padding: 5vh;
+}

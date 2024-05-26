@@ -45,4 +45,14 @@ export class HomePage implements OnInit {
     }, 2000);
   }
 
+  getBanners() {
+    this.api.getBanners().then(data => {
+      console.log(data);
+      this.banners = data;
+    })
+    .catch(e => {
+      console.log(e);
+    })
+  }
+
 }
