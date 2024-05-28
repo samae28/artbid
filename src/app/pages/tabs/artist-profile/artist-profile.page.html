@@ -10,16 +10,16 @@
 <ion-content>
   <ion-grid *ngIf="artistProfile?.artistName">
     <ion-row class="profile-header">
-        <ion-col size="5 ">
-          <ion-avatar>
-            <img [alt]="artistProfile.artistName" [src]="artistProfile.image" />
-          </ion-avatar>
-        </ion-col>
-        <ion-col size="7">
-          <ion-label>
-            <h2>{{ artistProfile.artistName }}</h2>
-          </ion-label>
-        </ion-col>
+      <ion-col size="5 ">
+        <ion-avatar>
+          <img [alt]="artistProfile.artistName" [src]="artistProfile.image" />
+        </ion-avatar>
+      </ion-col>
+      <ion-col size="7">
+        <ion-label>
+          <h2>{{ artistProfile.artistName }}</h2>
+        </ion-label>
+      </ion-col>
     </ion-row>
   </ion-grid>
 
@@ -28,22 +28,21 @@
     <ion-segment-button value="biography"> Biography </ion-segment-button>
     <ion-segment-button value="reviews"> Reviews </ion-segment-button>
   </ion-segment> -->
-<div>
-  <!-- <div *ngIf="selectedSegment === 'artworks'"> -->
+  <div>
+    <!-- <div *ngIf="selectedSegment === 'artworks'"> -->
     <ion-list *ngFor="let medium of mediums">
       <ion-list-header>{{ medium.mediumType }}</ion-list-header>
       <ion-item-group>
         <ng-container *ngFor="let artwork of artistArtworks">
           <app-artwork
             [artwork]="artwork"
-
             *ngIf="artwork.mediumID === medium.mediumID"
           ></app-artwork>
         </ng-container>
       </ion-item-group>
     </ion-list>
   </div>
-<!-- [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]" -->
+  <!-- [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]" -->
   <!-- <div *ngIf="selectedSegment === 'biography'">
     <br><br><br>
     <ion-card>
@@ -64,7 +63,7 @@
   </div> -->
 </ion-content>
 
-<ion-footer color="black">
+<!-- <ion-footer color="black">
   <ion-toolbar>
     <ion-label>
       <h4>
@@ -81,4 +80,4 @@
       VIEW CART
     </ion-button>
   </ion-toolbar>
-</ion-footer>
+</ion-footer> -->
