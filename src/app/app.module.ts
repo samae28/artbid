@@ -15,7 +15,10 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { getStorage, provideStorage } from '@angular/fire/storage';
-import { getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
+import {
+  getRemoteConfig,
+  provideRemoteConfig,
+} from '@angular/fire/remote-config';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -23,12 +26,10 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule, 
-    IonicModule.forRoot(), 
+    BrowserModule,
+    IonicModule.forRoot(),
     AppRoutingModule,
     RouterModule,
     HttpClientModule,
@@ -44,14 +45,14 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     provideFunctions(() => getFunctions()),
     provideMessaging(() => getMessaging()),
     provideStorage(() => getStorage()),
-    provideRemoteConfig(() => getRemoteConfig()), 
+    provideRemoteConfig(() => getRemoteConfig()),
   ],
-  providers: [{ 
-    provide: RouteReuseStrategy, 
-    useClass: IonicRouteStrategy 
-  }],
-  bootstrap: [
-    AppComponent
+  providers: [
+    {
+      provide: RouteReuseStrategy,
+      useClass: IonicRouteStrategy,
+    },
   ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -10,20 +10,35 @@ const routes: Routes = [
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./pages/tabs/tabs.module').then((m) => m.TabsPageModule),
-    canLoad: [AuthGuard]
+    loadChildren: () =>
+      import('./pages/tabs/tabs.module').then((m) => m.TabsPageModule),
+    canLoad: [AuthGuard],
+    data: {
+      type: 'user',
+    },
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () =>
+      import('./pages/login/login.module').then((m) => m.LoginPageModule),
   },
   {
     path: 'admin',
-    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
+    loadChildren: () =>
+      import('./pages/admin/admin.module').then((m) => m.AdminPageModule),
+    canLoad: [AuthGuard],
+    data: {
+      type: 'admin',
+    },
   },
   {
     path: 'seller',
-    loadChildren: () => import('./pages/seller/seller.module').then( m => m.SellerPageModule)
+    loadChildren: () =>
+      import('./pages/seller/seller.module').then((m) => m.SellerPageModule),
+    canLoad: [AuthGuard],
+    data: {
+      type: 'seller',
+    },
   },
 ];
 @NgModule({

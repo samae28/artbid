@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Medium</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form #f1="ngForm" (ngSubmit)="onSubmit(f1)">
+    <ion-list lines="none">
+      <ion-list-header>
+        <ion-label>Medium Details</ion-label>
+      </ion-list-header>
+
+      <ion-item color="light" class="ion-margin-bottom">
+        <ion-input
+          type="text"
+          name="mediumType"
+          ngModel
+          #mediumType="ngModel"
+          placeholder="Medium Type"
+          required
+        >
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="!mediumType.valid && mediumType.touched">
+        <p class="errorMsg">* Please enter medium type</p>
+      </ion-text>
+
+      <ion-item color="light" class="ion-margin-bottom">
+        <ion-input
+          type="text"
+          name="description"
+          ngModel
+          #description="ngModel"
+          placeholder="Description"
+          required
+        >
+        </ion-input>
+      </ion-item>
+      <ion-text
+        color="danger"
+        *ngIf="!description.valid && description.touched"
+      >
+        <p class="errorMsg">* Please enter medium description</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label>
+          Add Image
+          <p>
+            <input type="file" (change)="preview($event)" />
+          </p>
+        </ion-label>
+        <ion-thumbnail slot="end" *ngIf="image">
+          <img [src]="image" />
+        </ion-thumbnail>
+      </ion-item>
+
+      <ion-item color="light" class="ion-margin-bottom">
+        <ion-input
+          type="text"
+          name="remarks"
+          ngModel
+          #remarks="ngModel"
+          placeholder="Remarks"
+        >
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="!remarks.valid && remarks.touched">
+        <p class="errorMsg">* Please enter remarks</p>
+      </ion-text>
+    </ion-list>
+
+    <br /><br />
+
+    <ion-button
+      *ngIf="!isLoading"
+      [disabled]="!f1.valid"
+      expand="block"
+      shape="round"
+      type="submit"
+      color="primary"
+    >
+      Save
+    </ion-button>
+    <ion-button
+      *ngIf="!isLoading"
+      [disabled]="!f1.valid"
+      expand="block"
+      shape="round"
+      type="button"
+      color="primary"
+      (click)="onCancel()"
+    >
+      Cancel
+    </ion-button>
+
+    <div class="ion-text-center" *ngIf="isLoading">
+      <ion-button shape="round" color="primary" [disabled]="!f1.valid">
+        <ion-spinner name="circles"></ion-spinner>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

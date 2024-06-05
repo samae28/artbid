@@ -10,14 +10,14 @@ import { GlobalService } from 'src/app/services/global/global.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
   type: boolean = true;
   isLogin = false;
 
   constructor(
-    private authService: AuthService, 
-    private router: Router, 
-    private global: GlobalService) { }
+    private authService: AuthService,
+    private router: Router,
+    private global: GlobalService
+  ) {}
 
   ngOnInit() {
     this.isLoggedIn();
@@ -28,9 +28,9 @@ export class LoginPage implements OnInit {
       this.global.showLoader();
       const val = await this.authService.getId();
       console.log(val);
-      if(val) this.navigate();
+      if (val) this.navigate();
       this.global.hideLoader();
-    } catch(e) {
+    } catch (e) {
       console.log(e);
       this.global.hideLoader();
     }
@@ -42,30 +42,39 @@ export class LoginPage implements OnInit {
 
   onSubmit(form: NgForm) {
     console.log(form);
-    if(!form.valid) return;
+    if (!form.valid) return;
     this.login(form);
   }
 
   login(form) {
     this.isLogin = true;
-    this.authService.login(form.value.email, form.value.password).then(data => {
-      console.log(data);
-      this.navigate();
-      this.isLogin = false;
-      form.reset();
-    })
-    .catch(e => {
-      console.log(e);
-      this.isLogin = false;
-      let msg: string = 'Could not sign you in, please try again.';
-      if(e.code == 'auth/user-not-found') msg = 'E-mail address could not be found';
-      else if(e.code == 'auth/wrong-password') msg = 'Please enter a correct password';
-      this.global.showAlert(msg);
-    });
+    this.authService
+      .login(form.value.email, form.value.password)
+      .then((data) => {
+        console.log(data);
+        this.navigate(data);
+        this.isLogin = false;
+        form.reset();
+      })
+      .catch((e) => {
+        console.log(e);
+        this.isLogin = false;
+        let msg: string = 'Could not sign you in, please try again.';
+        if (e.code == 'auth/user-not-found')
+          msg = 'E-mail address could not be found';
+        else if (e.code == 'auth/wrong-password')
+          msg = 'Please enter a correct password';
+        this.global.showAlert(msg);
+      });
   }
 
-  navigate() {
-    this.router.navigateByUrl('/tabs');
+  navigate(type?) {
+    let url = '/tabs';
+    if (type == 'admin') {
+      url = '/admin';
+    } else if (type == 'seller') {
+      url = '/seller';
+    }
+    this.router.navigateByUrl(url);
   }
-
 }

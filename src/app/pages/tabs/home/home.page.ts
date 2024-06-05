@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api/api.service';
 
@@ -8,51 +8,52 @@ import { ApiService } from 'src/app/services/api/api.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-
   banners: any[] = [];
   artworks: any[] = [];
   isLoading: boolean = false;
-  
-  auctionArtworks = []; 
+
+  auctionArtworks = [];
   fixedPriceArtworks = [];
   artists: any[] = [];
 
   constructor(
-    private cdr: ChangeDetectorRef, 
-    private router: Router, 
-    private api: ApiService) { 
-      this.auctionArtworks = this.api.getAuctionArtworks();
-      this.fixedPriceArtworks = this.api.getFixedPriceArtworks();
-    }
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private api: ApiService
+  ) {
+    this.auctionArtworks = this.api.getAuctionArtworks();
+    this.fixedPriceArtworks = this.api.getFixedPriceArtworks();
+  }
 
   navigateToAuction(segment: string): void {
     this.router.navigate(['/tabs/auction'], { queryParams: { segment } });
   }
   navigateToBrowse(segment: string): void {
     this.router.navigate(['/tabs/browse'], { queryParams: { segment } });
-  }  
+  }
 
   ngOnInit() {
     this.isLoading = true;
 
     setTimeout(() => {
-      this.banners = this.api.banners;
+      this.getBanners();
       this.artworks = this.api.artworks;
       this.artists = this.api.artists;
-      
+
       this.isLoading = false;
       this.cdr.detectChanges();
     }, 2000);
   }
 
   getBanners() {
-    this.api.getBanners().then(data => {
-      console.log(data);
-      this.banners = data;
-    })
-    .catch(e => {
-      console.log(e);
-    })
+    this.api
+      .getBanners()
+      .then((data) => {
+        console.log(data);
+        this.banners = data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
-
 }

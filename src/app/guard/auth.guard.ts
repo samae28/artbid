@@ -1,156 +1,83 @@
-import { ProfileService } from 'src/app/services/profile/profile.service';
 import { Injectable } from '@angular/core';
 import { CanLoad, Route, Router, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanLoad {
-
   constructor(
+    private alertCtrl: AlertController,
     private authService: AuthService,
-    private router: Router,
-    private profileService: ProfileService
-  ) { }
+    private router: Router
+  ) {}
 
-  // canLoad(
-  //   route: Route,
-  //   segments: UrlSegment[]
-// ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-  //     return this.authService.checkAuth().then(id => {
-  //       console.log('auth guard checking id: ', id);
-  //       if(id) {
-  //         // getprofile
-  //         this.profileService.getProfile().then(profile => {
-  //           console.log('user profile', profile);
-  //           if (profile && profile?.type == 'user') {
-  //             return true;
-  //           } else if(profile && profile?.type == 'seller') {
-  //             this.router.navigateByUrl('/seller');
-  //             return false;
-  //           } else if(profile && profile?.type == 'admin') {
-  //             this.router.navigateByUrl('/admin');
-  //             return false;
-  //           } else {                
-  //             this.authService.logout();
-  //             this.router.navigateByUrl('/login');
-  //             return false;
-  //           }
-  //         })
-  //         .catch(e => {
-  //           console.log(e);
-  //           this.authService.logout();
-  //           this.router.navigateByUrl('/login');
-  //           return false;
-  //         })
-  //         return true;
-  //       }
-  //       else {
-  //         // redrect to login page
-  //         this.router.navigateByUrl('/login');
-  //         return false;
-  //       }
-  //     })
-  //     .catch(e => {
-  //       console.log(e);
-  //       this.router.navigateByUrl('/login');
-  //         return false;
-  //     });
-  //   }
-
-//   canLoad(
-//   route: Route,
-//   segments: UrlSegment[]
-// ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-//   return this.authService.checkAuth().then(id => {
-//     console.log('auth guard checking id: ', id);
-//     if (id) {
-//       // getprofile
-//       return this.profileService.getProfile().then(profile => {
-//         console.log('user profile', profile);
-//         if (profile && profile.type == 'user') {
-//           return true;
-//         } else if (profile && profile.type == 'seller') {
-//           this.router.navigateByUrl('/seller');
-//           return false; // Navigate to seller page and return false
-//         } else if (profile && profile.type == 'admin') {
-//           this.router.navigateByUrl('/admin');
-//           return false; // Navigate to admin page and return false
-//         } else {
-//           this.authService.logout();
-//           this.router.navigateByUrl('/login');
-//           return false;
-//         }
-//       }).catch(e => {
-//         console.log(e);
-//         this.authService.logout();
-//         this.router.navigateByUrl('/login');
-//         return false;
-//       });
-//     } else {
-//       // redirect to login page
-//       this.router.navigateByUrl('/login');
-//       return false;
-//     }
-//   }).catch(e => {
-//     console.log(e);
-//     this.router.navigateByUrl('/login');
-//     return false;
-//   });
-// }
-
-canLoad(
-  route: Route,
-  segments: UrlSegment[]
-): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-  return this.authService.checkAuth().then(id => {
-    console.log('auth guard checking id: ', id);
-    if (id) {
-      // getprofile
-      return this.profileService.getProfile().then(profile => {
-        console.log('user profile', profile);
-        if (profile && profile.type == 'user') {
-          return true;
-        } else if (profile && profile.type == 'seller') {
-          if (route.path === 'seller') {
-            // Allow navigation only if the route is explicitly 'seller'
-            return true;
-          } else {
-            this.router.navigateByUrl('/seller');
-            return false; // Navigate to seller page and return false
-          }
-        } else if (profile && profile.type == 'admin') {
-          if (route.path === 'admin') {
-            // Allow navigation only if the route is explicitly 'admin'
-            return true;
-          } else {
-            this.router.navigateByUrl('/admin');
-            return false; // Navigate to admin page and return false
-          }
-        } else {
-          this.authService.logout();
-          this.router.navigateByUrl('/login');
+  async canLoad(route: Route, segments: UrlSegment[]): Promise<boolean> {
+    const roleType = route.data['type'];
+    try {
+      const type = await this.authService.checkUserAuth();
+      if (type) {
+        if (type == roleType) return true;
+        else {
+          let url = '/tabs';
+          if (type == 'admin') url = '/admin';
+          else if (type == 'seller') url = '/seller';
+          this.navigate(url);
           return false;
         }
-      }).catch(e => {
-        console.log(e);
-        this.authService.logout();
-        this.router.navigateByUrl('/login');
+      } else {
+        this.checkForAlert(roleType);
         return false;
-      });
-    } else {
-      // redirect to login page
-      this.router.navigateByUrl('/login');
+      }
+    } catch (e) {
+      console.log(e);
+      this.checkForAlert(roleType);
       return false;
     }
-  }).catch(e => {
-    console.log(e);
-    this.router.navigateByUrl('/login');
+  }
+
+  navigate(url) {
+    this.router.navigateByUrl(url, { replaceUrl: true });
     return false;
-  });
-}
+  }
 
+  async checkForAlert(roleType) {
+    const id = await this.authService.getId();
+    if (id) {
+      // check network
+      console.log('alert: ', id);
+      this.showAlert(roleType);
+    } else {
+      this.authService.logout();
+      this.navigate('/login');
+    }
+  }
 
+  showAlert(role) {
+    this.alertCtrl
+      .create({
+        header: 'Authentication Failed',
+        message: 'Please check your Internet Connectivity and tr again',
+        buttons: [
+          {
+            text: 'Logout',
+            handler: () => {
+              this.authService.logout();
+              this.navigate('/login');
+            },
+          },
+          {
+            text: 'Retry',
+            handler: () => {
+              let url = '/tabs';
+              if (role == 'admin') url = '/admin';
+              this.navigate(url);
+            },
+          },
+        ],
+      })
+      .then((alertEl) => alertEl.present());
+  }
 }

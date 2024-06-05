@@ -10,14 +10,13 @@ import { GlobalService } from 'src/app/services/global/global.service';
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
-
   isLoading: boolean = false;
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router,
     private global: GlobalService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.isLoggedIn();
@@ -28,38 +27,48 @@ export class SignupPage implements OnInit {
       this.global.showLoader();
       const val = await this.authService.getId();
       console.log(val);
-      if(val) this.navigate();
+      if (val) this.navigate();
       this.global.hideLoader();
-    } catch(e) {
+    } catch (e) {
       console.log(e);
       this.global.hideLoader();
     }
   }
 
   onSubmit(form: NgForm) {
-    if(!form.valid) return;
+    if (!form.valid) return;
     this.register(form);
   }
+
   register(form: NgForm) {
     this.isLoading = true;
     console.log(form.value);
-    this.authService.register(form.value).then(() => {
-      this.navigate();
-      this.isLoading = false;
-      form.reset();
-    })
-    .catch(e => {
-      console.log(e);
-      this.isLoading = false;
-      let msg: string = 'Could not sign you up, please try again.';
-      if(e.code == 'auth/email-already-in-use') {
-        msg = e.message;
-      }
-      this.global.showAlert(msg);
-    });
+    this.authService
+      .register(form.value)
+      .then((data: any) => {
+        console.log(data);
+        this.navigate(data.type);
+        this.isLoading = false;
+        form.reset();
+      })
+      .catch((e) => {
+        console.log(e);
+        this.isLoading = false;
+        let msg: string = 'Could not sign you up, please try again.';
+        if (e.code == 'auth/email-already-in-use') {
+          msg = e.message;
+        }
+        this.global.showAlert(msg);
+      });
   }
 
-  navigate() {
-    this.router.navigateByUrl('/tabs');
+  navigate(type?) {
+    let url = '/tabs';
+    if (type == 'admin') {
+      url = '/admin';
+    } else if (type == 'seller') {
+      url = '/seller';
+    }
+    this.router.navigateByUrl(url);
   }
 }

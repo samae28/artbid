@@ -12,6 +12,10 @@ const routes: Routes = [
     path: 'add-banner',
     loadChildren: () => import('./add-banner/add-banner.module').then( m => m.AddBannerPageModule)
   },
+  {
+    path: 'add-medium',
+    loadChildren: () => import('./add-medium/add-medium.module').then( m => m.AddMediumPageModule)
+  },
 ];
 
 @NgModule({

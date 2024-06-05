@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Mediums } from 'src/app/models/mediums.model';
 import { ApiService } from 'src/app/services/api/api.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 })
 export class BrowsePage implements OnInit {
   selectedSegment: 'medium' | 'artist' = 'medium';
-  mediums: any[] = [];
+  mediums: Mediums[] = [];
   artists: any[] = [];
   artworks: any[] = [];
   auctionArtworks = [];
@@ -18,18 +19,25 @@ export class BrowsePage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private api: ApiService
-  ) {
-
-  }
+    private apiService: ApiService
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((queryParams) => {
       this.selectedSegment = queryParams['segment'] || 'medium';
     });
-    this.mediums = this.api.mediums;
-    this.artists = this.api.artists;
+    this.loadMediums();
+    this.artists = this.apiService.artists;
     this.artworks = this.artworks;
+  }
+
+  async loadMediums() {
+    try {
+      this.mediums = await this.apiService.getMediums();
+      console.log('Mediums:', this.mediums);
+    } catch (error) {
+      console.error('Error loading mediums:', error);
+    }
   }
 
   navigateToArtistProfile(artistId: string) {
