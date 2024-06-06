@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Artworks } from 'src/app/models/artworks.model';
+import { Mediums } from 'src/app/models/mediums.model';
 import { ApiService } from 'src/app/services/api/api.service';
 
 @Component({
@@ -7,53 +9,45 @@ import { ApiService } from 'src/app/services/api/api.service';
   styleUrls: ['./artwork.component.scss'],
 })
 export class ArtworkComponent implements OnInit {
-  @Input() artwork: any;
+  @Input() artwork: Artworks[] = [];
   artists: any[] = [];
   id: any;
-  mediums: any[] = [];
-  constructor(
-    private api: ApiService) {}
+  mediums: Mediums[] = [];
+
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     console.log('Artwork array:', this.artwork);
     console.log('Artists:', this.artists);
-    console.log('ArtistID:', this.artwork.artistID);
-    this.artists = this.api.artists;
-    this.mediums = this.api.mediums;
+    // console.log('ArtistID:', this.artwork.artistID);
+    // this.artists = this.api.artists;
+    // this.mediums = this.api.mediums;
+    this.loadArtworks();
   }
 
-  getData(artistID: any): string {
-    console.log('Artists:', this.artists);
-    console.log('ArtistID to find:', artistID);
+  loadArtworks() {
+    this.apiService.getArtworks().subscribe((data: Artworks[]) => {
+      this.artwork = data;
+    });
+  }
 
-    if (this.artists) {
-      const artist = this.artists.find(
-        (artist) => artist.artistID.toString() === artistID.toString()
-      );
-      console.log('Found Artist:', artist);
-      return artist ? artist.artistName : 'Unknown Artist';
-    } else {
-      return 'Unknown Artist';
+  getData(artistID: string): string {
+    // Implement your logic to get artist data by ID
+    return 'Artist Name';
+  }
+
+  isAuction(artwork: Artworks): boolean {
+    return artwork.isAuction === 1;
+  }
+
+  getHighestBid(artwork: Artworks): number {
+    if (
+      artwork.auction &&
+      artwork.auction.bids &&
+      artwork.auction.bids.length > 0
+    ) {
+      return Math.max(...artwork.auction.bids.map((bid) => bid.bidAmount));
     }
+    return artwork.price;
   }
-  
-
-  getHighestBid(artwork: any): string {
-    if (artwork.isAuction && artwork.auction.length > 0) {
-      const bids = artwork.auction[0].bids; // Assuming only one auction for simplicity
-      if (bids && bids.length > 0) {
-        // Sort bids by bidAmount in descending order
-        const sortedBids = bids.sort((a, b) => parseFloat(b.bidAmount) - parseFloat(a.bidAmount));
-        return sortedBids[0].bidAmount; // Return the highest bid amount
-      }
-    }
-    return 'N/A'; // Return 'N/A' if no bids or not an auction artwork
-  }
-
-  isAuction(): boolean {
-    return this.artwork.isAuction;
-  }
-
- 
-
 }

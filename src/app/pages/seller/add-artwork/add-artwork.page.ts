@@ -8,6 +8,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { Mediums } from 'src/app/models/mediums.model';
+import { Auction } from 'src/app/models/auction.model';
 
 @Component({
   selector: 'app-add-artwork',
@@ -18,11 +19,13 @@ export class AddArtworkPage implements OnInit {
   @ViewChild('filePicker', { static: false }) filePickerRef: ElementRef;
   isLoading: boolean = false;
   isAuction: boolean = false;
+  auction: Auction = new Auction('', '', new Date(), new Date(), []);
   mediums: Mediums[] = [];
   image: string | ArrayBuffer | null = null;
   artworks: Artworks[] = [];
   imageFile: any;
   startDate: any;
+  endDate: any;
 
   price: number;
   startingBid: number;
@@ -54,15 +57,6 @@ export class AddArtworkPage implements OnInit {
     try {
       console.log(event);
     } catch (e) {}
-  }
-
-  async getArtwork() {
-    try {
-      this.artworks = await this.apiService.getArtwork();
-    } catch (e) {
-      console.log(e);
-      this.global.errorToast();
-    }
   }
 
   preview(event) {
@@ -100,43 +94,31 @@ export class AddArtworkPage implements OnInit {
   }
 
   async onSubmit(form: NgForm) {
-    if (!form.valid || !this.image) return;
+    if (!form.valid || !this.imageFile) return;
     try {
       this.isLoading = true;
       const url = await this.uploadImage(this.imageFile);
-      console.log(url);
       if (!url) {
         this.isLoading = false;
         this.global.errorToast('Image not uploaded, please try again');
         return;
       }
-
       const data = {
         image: url,
-        artworkID: this.randomString(), // Assuming artworkID needs to be generated
-        mediumID: form.value.mediumID || '',
-        title: form.value.title || '',
-        description: form.value.description || '',
-        price: form.value.price || 0,
-        status: form.value.status || 'available',
-        isAuction: form.value.isAuction || false,
+        ...form.value,
         auction: form.value.isAuction
           ? {
               auctionID: this.randomString(),
-              startDate: form.value.startDate || null,
-              endDate: form.value.endDate || null,
+              artworkID: null, // This will be set after adding the artwork
+              startDate: new Date(form.value.startDate).toISOString(),
+              endDate: new Date(form.value.endDate).toISOString(),
               bids: [],
             }
           : null,
       };
-
-      if (!data.isAuction) {
-        delete data.auction;
-      }
-
       await this.apiService.addArtworkItem(data);
       this.isLoading = false;
-      this.global.successToast('Artwork Added Successfully');
+      this.global.successToast('Artwork Item Added Successfully');
     } catch (e) {
       console.log(e);
       this.isLoading = false;

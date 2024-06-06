@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Artworks } from 'src/app/models/artworks.model';
 import { ApiService } from 'src/app/services/api/api.service';
 
 @Component({
@@ -13,33 +14,36 @@ export class SearchPage implements OnInit {
     icon: 'search-outline',
     title: 'No Artists Record Found',
   };
-  isLoading: boolean;
-  query: any;
-  allArtworks: any[] = [];
+  allArtworks: Artworks[] = [];
+  query: string = '';
+  isLoading: boolean = false;
 
-  artworks: any[] = [];
+  artworks: Artworks[] = [];
 
-  constructor(private api: ApiService) {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     setTimeout(() => {
       this.sInput.setFocus();
     }, 500);
+    this.loadArtworks();
+  }
+
+  loadArtworks() {
+    this.apiService.getArtworks().subscribe((data: Artworks[]) => {
+      this.artworks = data;
+    });
   }
 
   async onSearchChange(event) {
-    console.log(event.detail.value);
     this.query = event.detail.value.toLowerCase();
     this.artworks = [];
     if (this.query.length > 0) {
       this.isLoading = true;
-      setTimeout(async () => {
-        this.allArtworks = this.api.allArtworks;
-
+      setTimeout(() => {
         this.artworks = this.allArtworks.filter((element: any) => {
-          return element.short_name.includes(this.query);
+          return element.title.toLowerCase().includes(this.query);
         });
-        console.log(this.artworks);
         this.isLoading = false;
       }, 3000);
     }

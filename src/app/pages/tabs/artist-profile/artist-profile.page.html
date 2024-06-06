@@ -35,7 +35,7 @@
       <ion-item-group>
         <ng-container *ngFor="let artwork of artistArtworks">
           <app-artwork
-            [artwork]="artwork"
+            [artwork]="artworks"
             *ngIf="artwork.mediumID === medium.mediumID"
           ></app-artwork>
         </ng-container>

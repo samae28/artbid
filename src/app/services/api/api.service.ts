@@ -5,6 +5,8 @@ import { switchMap } from 'rxjs/internal/operators/switchMap';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { Mediums } from 'src/app/models/mediums.model';
+import { Auction } from 'src/app/models/auction.model';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -96,56 +98,66 @@ export class ApiService {
     }
   }
 
-  async getArtwork() {
-    try {
-      const artworks = await this.collection('artworks')
-        .get()
-        .pipe(
-          switchMap(async (data: any) => {
-            let artworkData = await data.docs.map((element) => {
-              const item = element.data();
-              return item;
-            });
-            console.log(artworkData);
-            return artworkData;
+  getArtworks(): Observable<Artworks[]> {
+    return this.collection('allArtworks')
+      .valueChanges()
+      .pipe(
+        map((data: any[]) =>
+          data.map((item) => {
+            let auction = item.auction
+              ? new Auction(
+                  item.auction.auctionID,
+                  item.auction.artworkID,
+                  new Date(item.auction.startDate.seconds * 1000),
+                  new Date(item.auction.endDate.seconds * 1000),
+                  item.auction.bids
+                )
+              : null;
+
+            return new Artworks(
+              item.artworkID,
+              item.mediumID,
+              item.title,
+              item.description,
+              item.image,
+              item.price,
+              item.status,
+              auction,
+              item.isAuction,
+              item.artistID
+            );
           })
         )
-        .toPromise();
-      console.log(artworks);
-      return artworks;
-    } catch (e) {
-      throw e;
-    }
+      );
   }
 
-  async addArtworkItem(data) {
+  async addArtworkItem(data: any): Promise<boolean> {
     try {
       const id = this.randomString();
+      const auction = data.isAuction
+        ? {
+            auctionID: this.randomString(),
+            artworkID: id, // Set the artwork ID here
+            startDate: new Date(data.startDate).toISOString(), // Ensure date is in ISO string format
+            endDate: new Date(data.endDate).toISOString(), // Ensure date is in ISO string format
+            bids: [],
+          }
+        : null;
+
       const artworks = {
         id,
-        mediumID: data.mediumID,
+        mediumID: this.firestore.collection('mediums').doc(data.mediumID),
         title: data.title,
-        shortname: data.shortname || '',
         description: data.description,
         image: data.image,
         price: data.price,
-        status: data.status,
-        isAuction: data.isAuction,
-        auction: data.isAuction
-          ? {
-              auctionID: data.auction.auctionID,
-              startDate: data.auction.startDate,
-              endDate: data.auction.endDate,
-              bids: data.auction.bids,
-            }
-          : null,
+        status: 'active', // Ensure status is always defined
+        auction: auction,
+        isAuction: data.isAuction ? 1 : 0,
+        artistID: data.artistID || 'defaultArtistID', // Provide a default value if artistID is missing
       };
 
-      await this.firestore
-        .collection('allArtworks')
-        .doc(id) // use a generated ID instead of data.mediumID
-        .set(artworks);
-
+      await this.firestore.collection('allArtworks').doc(id).set(artworks);
       return true;
     } catch (e) {
       throw e;

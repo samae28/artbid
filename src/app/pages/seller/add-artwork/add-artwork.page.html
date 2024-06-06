@@ -31,16 +31,11 @@
           >
         </ion-select>
       </ion-item>
-      <ion-text
-        color="danger"
-        *ngIf="!mediumID.valid && mediumID.touched"
-        class="ion-text-center"
-      >
+      <ion-text color="danger" *ngIf="!mediumID.valid && mediumID.touched">
         <p class="errorMsg">* Select Medium</p>
       </ion-text>
 
       <ion-item color="light" class="ion-margin-bottom">
-        <!-- <ion-icon name="person" slot="start" color="primary"></ion-icon>  -->
         <ion-input
           type="text"
           name="title"
@@ -48,8 +43,7 @@
           #title="ngModel"
           placeholder="Title"
           required
-        >
-        </ion-input>
+        ></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="!title.valid && title.touched">
         <p class="errorMsg">* Please enter artwork title</p>
@@ -63,8 +57,7 @@
           #description="ngModel"
           placeholder="Description"
           required
-        >
-        </ion-input>
+        ></ion-input>
       </ion-item>
       <ion-text
         color="danger"
@@ -74,7 +67,6 @@
       </ion-text>
 
       <ion-item color="light" class="ion-margin-bottom">
-        <!-- <ion-icon name="key" slot="start" color="primary"></ion-icon>  -->
         <ion-input
           type="number"
           name="price"
@@ -83,8 +75,7 @@
           placeholder="Price"
           required
           [disabled]="isPrice"
-        >
-        </ion-input>
+        ></ion-input>
       </ion-item>
       <ion-text
         color="danger"
@@ -121,75 +112,58 @@
 
     <br /><br />
 
-    <!-- Auction details if customer want to auction their arts -->
     <ion-list lines="none">
       <ion-list-header>
         <ion-label> Auction Details</ion-label>
       </ion-list-header>
 
       <ion-item>
-        <ion-label>Set it as Auction</ion-label>
-        <ion-toggle
+        <ion-checkbox
+          aria-label="Is Auction"
+          labelPlacement="start"
           name="isAuction"
           [(ngModel)]="isAuction"
-          checked="false"
-          value="true"
-          (ionChange)="toggleChanged()"
-        ></ion-toggle>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Start Date</ion-label>
-        <ion-datetime-button
-          datetime="datetime"
-          name="startDate"
-          ngModel
-          #startDate="ngModel"
-          required
-          presentation="date-time"
-          [disabled]="!isAuction"
-        ></ion-datetime-button>
-
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime id="datetime"></ion-datetime>
-          </ng-template>
-        </ion-modal>
-      </ion-item>
-      <ion-text color="danger" *ngIf="!startDate.valid && startDate.touched">
-        <p class="errorMsg">* Start Date required</p>
-      </ion-text>
-
-      <ion-item>
-        <ion-label>Input different price as starting bid??</ion-label>
-        <ion-toggle
-          name="isPrice"
-          [(ngModel)]="isPrice"
-          checked="false"
-          value="true"
-          (ionChange)="onToggleChange()"
-        ></ion-toggle>
-      </ion-item>
-
-      <ion-item color="light" class="ion-margin-bottom" *ngIf="isPrice">
-        <ion-input
-          type="number"
-          name="startingBid"
-          [(ngModel)]="startingBid"
-          placeholder="Starting Bid"
-          required
-          min="0"
-          minlength="1"
+          >Sell as Auction?</ion-checkbox
         >
-        </ion-input>
       </ion-item>
-      <ion-text
-        color="danger"
-        *ngIf="!isPrice && startingBid === null"
-        class="ion-text-center"
-      >
-        <p class="errorMsg">* Starting Bid Required.</p>
-      </ion-text>
+
+      <div *ngIf="isAuction">
+        <ion-item color="light" class="ion-margin-bottom">
+          <ion-label>Open Time</ion-label>
+          <ion-datetime
+            name="startDate"
+            ngModel
+            #startDate="ngModel"
+            required
+            presentation="date-time"
+          ></ion-datetime>
+        </ion-item>
+        <ion-text
+          color="danger"
+          *ngIf="!startDate.valid && startDate.touched"
+          class="ion-text-center"
+        >
+          <p class="errorMsg">* Select Opening Time.</p>
+        </ion-text>
+
+        <ion-item color="light" class="ion-margin-bottom">
+          <ion-label>Close Time</ion-label>
+          <ion-datetime
+            name="endDate"
+            ngModel
+            #endDate="ngModel"
+            required
+            presentation="date-time"
+          ></ion-datetime>
+        </ion-item>
+        <ion-text
+          color="danger"
+          *ngIf="!endDate.valid && endDate.touched"
+          class="ion-text-center"
+        >
+          <p class="errorMsg">* Select Closing Time.</p>
+        </ion-text>
+      </div>
     </ion-list>
 
     <br /><br />

@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { Artworks } from 'src/app/models/artworks.model';
 import { ApiService } from 'src/app/services/api/api.service';
 
 @Component({
@@ -9,25 +10,23 @@ import { ApiService } from 'src/app/services/api/api.service';
 })
 export class HomePage implements OnInit {
   banners: any[] = [];
-  artworks: any[] = [];
+  artworks: Artworks[] = [];
   isLoading: boolean = false;
 
-  auctionArtworks = [];
-  fixedPriceArtworks = [];
+  auctionArtworks: Artworks[] = [];
+  fixedPriceArtworks: Artworks[] = [];
   artists: any[] = [];
 
   constructor(
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private api: ApiService
-  ) {
-    this.auctionArtworks = this.api.getAuctionArtworks();
-    this.fixedPriceArtworks = this.api.getFixedPriceArtworks();
-  }
+    private apiService: ApiService
+  ) {}
 
   navigateToAuction(segment: string): void {
     this.router.navigate(['/tabs/auction'], { queryParams: { segment } });
   }
+
   navigateToBrowse(segment: string): void {
     this.router.navigate(['/tabs/browse'], { queryParams: { segment } });
   }
@@ -37,8 +36,8 @@ export class HomePage implements OnInit {
 
     setTimeout(() => {
       this.getBanners();
-      this.artworks = this.api.artworks;
-      this.artists = this.api.artists;
+      this.loadArtworks();
+      this.artists = this.apiService.artists;
 
       this.isLoading = false;
       this.cdr.detectChanges();
@@ -46,7 +45,7 @@ export class HomePage implements OnInit {
   }
 
   getBanners() {
-    this.api
+    this.apiService
       .getBanners()
       .then((data) => {
         console.log(data);
@@ -55,5 +54,19 @@ export class HomePage implements OnInit {
       .catch((e) => {
         console.log(e);
       });
+  }
+
+  loadArtworks() {
+    this.apiService.getArtworks().subscribe((data: Artworks[]) => {
+      this.artworks = data;
+      this.auctionArtworks = this.artworks.filter(
+        (artwork) => artwork.isAuction
+      );
+      this.fixedPriceArtworks = this.artworks.filter(
+        (artwork) => artwork.isAuction !== 1
+      );
+      console.log('Auction Artworks:', this.auctionArtworks);
+      console.log('Fixed Price Artworks:', this.fixedPriceArtworks);
+    });
   }
 }
