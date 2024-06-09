@@ -1,0 +1,26 @@
+.custom-container {
+  height: 300px; /* Adjust the height as needed */
+}  
+
+ion-header {
+  ion-icon {
+      font-size: 1rem;
+  }    
+}
+ion-label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  h4 {
+      font-weight: bold;
+      font-size: 1.2rem;
+  }    
+  p {
+      font-size: 0.7rem;
+  }
+}
+
+.vertical-align-center {
+  display: flex;
+  padding-bottom: 18px;
+  font-size: 1rem;
+}

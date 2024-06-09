@@ -1,0 +1,47 @@
+<ion-content>
+  <div *ngIf="isLoading">
+    <ion-skeleton-text animated style="height: 25vh"></ion-skeleton-text>
+  </div>
+  <app-loading-artwork *ngIf="isLoading"></app-loading-artwork>
+
+  <app-banner *ngIf="!isLoading" [bannerImages]="banners"></app-banner>
+
+  <ion-list *ngIf="!isLoading">
+    <ion-list-header class="ion-margin-bottom">
+      <ion-label>
+        <h4>Auction</h4>
+        <p>Discover ongoing auctions</p>
+      </ion-label>
+      <ion-button
+        color="dark"
+        vertical-align-center
+        (click)="navigateToAuction('current')"
+      >
+        View All
+        <span><ion-icon name="chevron-forward-outline"></ion-icon></span>
+      </ion-button>
+    </ion-list-header>
+    <ion-item-group *ngIf="auctionArtworks.length > 0">
+      <app-artwork
+        *ngFor="let artwork of auctionArtworks"
+        [artwork]="artwork"
+      ></app-artwork>
+    </ion-item-group>
+  </ion-list>
+
+  <ion-list *ngIf="!isLoading">
+    <ion-list-header class="ion-margin-bottom">
+      <ion-label>
+        <h4>Fixed Price</h4>
+        <p>Discover fixed-price artworks</p>
+      </ion-label>
+      <!-- Add a button or link for navigating to all fixed-price artworks if needed -->
+    </ion-list-header>
+    <ion-item-group *ngIf="fixedPriceArtworks.length > 0">
+      <app-artwork
+        *ngFor="let artwork of fixedPriceArtworks"
+        [artwork]="artwork"
+      ></app-artwork>
+    </ion-item-group>
+  </ion-list>
+</ion-content>

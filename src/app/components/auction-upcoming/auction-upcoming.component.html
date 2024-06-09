@@ -1,0 +1,34 @@
+<!-- <ion-item lines="none">
+  <ion-thumbnail slot="start">
+    <img
+      [src]="artwork?.image ? artwork.image : 'assets/images/art1.jpg'"
+      alt=""
+    />
+  </ion-thumbnail>
+  <ion-label>
+    <h4>{{ artwork?.artist }}</h4>
+    <ion-text color="medium">
+      <p class="pStyle">{{ artwork?.title }}</p>
+      <p>Starting Bid: P{{ artwork?.startingBid }}</p>
+      <ion-text color="tertiary">
+        <p class="distance">Current Bid: {{ getHighestBid() }}</p>
+      </ion-text>
+    </ion-text>
+  </ion-label>
+</ion-item> -->
+
+<ion-item lines="none">
+  <ion-thumbnail slot="start">
+    <img [src]="artwork?.image ? artwork.image : 'assets/images/art1.jpg'" alt="">
+  </ion-thumbnail>
+  <ion-label>
+    <h4>{{ artwork?.artist }}</h4>
+    <ion-text color="medium">
+      <p class="pStyle">{{ artwork?.title }}</p>
+      <p>Starting Bid: P{{ artwork?.startingBid }}</p>
+      <ion-text color="tertiary">
+        <p class="distance">Current Bid: {{ getHighestBid() }}</p>
+      </ion-text>
+    </ion-text>
+  </ion-label>
+</ion-item>

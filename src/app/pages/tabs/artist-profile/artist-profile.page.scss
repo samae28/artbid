@@ -1,0 +1,51 @@
+/* artists-profile.page.scss */
+
+ion-header {
+  ion-toolbar {
+    --background: #3880ff;
+    color: #fff;
+  }
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 20px;
+  background-color: #fff !important;
+}
+
+ion-avatar {
+  width: 100px;
+  height: 100px;
+}
+
+ion-label {
+  margin-left: 20px;
+}
+
+ion-content {
+  ion-segment {
+    --color: #3880ff;
+    --indicator-color: #3880ff;
+    margin: 20px 0;
+    position: relative !important;
+  }
+
+  // div {
+  //   padding: 20px;
+  // }
+
+  ion-list {
+    ion-item {
+      ion-thumbnail {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
+
+  ion-card {
+    margin: 10px;
+  }
+}

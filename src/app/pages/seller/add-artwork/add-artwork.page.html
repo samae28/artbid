@@ -1,0 +1,198 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/seller"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Artwork</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form #f1="ngForm" (ngSubmit)="onSubmit(f1)">
+    <ion-list lines="none">
+      <ion-list-header>
+        <ion-label>Artwork Details</ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label>Select Medium</ion-label>
+        <ion-select
+          (ionChange)="changeMedium($event)"
+          interface="popover"
+          name="mediumID"
+          ngModel
+          #mediumID="ngModel"
+          required
+        >
+          <ion-select-option
+            *ngFor="let medium of mediums"
+            [value]="medium.mediumID"
+            >{{medium?.mediumType}}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-text color="danger" *ngIf="!mediumID.valid && mediumID.touched">
+        <p class="errorMsg">* Select Medium</p>
+      </ion-text>
+
+      <ion-item color="light" class="ion-margin-bottom">
+        <ion-input
+          type="text"
+          name="title"
+          ngModel
+          #title="ngModel"
+          placeholder="Title"
+          required
+        ></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="!title.valid && title.touched">
+        <p class="errorMsg">* Please enter artwork title</p>
+      </ion-text>
+
+      <ion-item color="light" class="ion-margin-bottom">
+        <ion-input
+          type="text"
+          name="description"
+          ngModel
+          #description="ngModel"
+          placeholder="Description"
+          required
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        color="danger"
+        *ngIf="!description.valid && description.touched"
+      >
+        <p class="errorMsg">* Please enter Artwork description</p>
+      </ion-text>
+
+      <ion-item color="light" class="ion-margin-bottom">
+        <ion-input
+          type="number"
+          name="price"
+          ngModel
+          #price="ngModel"
+          placeholder="Price"
+          required
+          [disabled]="isPrice"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        color="danger"
+        *ngIf="!price.valid && price.touched"
+        class="ion-text-center"
+      >
+        <p class="errorMsg">* Please enter Artwork Price</p>
+      </ion-text>
+
+      <div
+        class="itemImage"
+        *ngIf="!image || image == ''"
+        (click)="changeImage()"
+      >
+        <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+        <p>Upload Item Image here</p>
+      </div>
+
+      <input
+        type="file"
+        accept="image/jpeg"
+        #filePicker
+        (change)="onFileChosen($event)"
+      />
+
+      <div
+        class="itemImage imageDiv"
+        *ngIf="image && image != ''"
+        (click)="changeImage()"
+      >
+        <ion-img [src]="image"></ion-img>
+      </div>
+    </ion-list>
+
+    <br /><br />
+
+    <ion-list lines="none">
+      <ion-list-header>
+        <ion-label> Auction Details</ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-checkbox
+          aria-label="Is Auction"
+          labelPlacement="start"
+          name="isAuction"
+          [(ngModel)]="isAuction"
+          >Sell as Auction?</ion-checkbox
+        >
+      </ion-item>
+
+      <div *ngIf="isAuction">
+        <ion-item color="light" class="ion-margin-bottom">
+          <ion-label>Open Time</ion-label>
+          <ion-datetime
+            name="startDate"
+            ngModel
+            #startDate="ngModel"
+            required
+            presentation="date-time"
+          ></ion-datetime>
+        </ion-item>
+        <ion-text
+          color="danger"
+          *ngIf="!startDate.valid && startDate.touched"
+          class="ion-text-center"
+        >
+          <p class="errorMsg">* Select Opening Time.</p>
+        </ion-text>
+
+        <ion-item color="light" class="ion-margin-bottom">
+          <ion-label>Close Time</ion-label>
+          <ion-datetime
+            name="endDate"
+            ngModel
+            #endDate="ngModel"
+            required
+            presentation="date-time"
+          ></ion-datetime>
+        </ion-item>
+        <ion-text
+          color="danger"
+          *ngIf="!endDate.valid && endDate.touched"
+          class="ion-text-center"
+        >
+          <p class="errorMsg">* Select Closing Time.</p>
+        </ion-text>
+      </div>
+    </ion-list>
+
+    <br /><br />
+
+    <ion-button
+      *ngIf="!isLoading"
+      [disabled]="!f1.valid"
+      expand="block"
+      shape="round"
+      type="submit"
+      color="primary"
+    >
+      POST
+    </ion-button>
+    <ion-button
+      *ngIf="!isLoading"
+      [disabled]="!f1.valid"
+      expand="block"
+      shape="round"
+      type="submit"
+      color="primary"
+    >
+      CANCEL
+    </ion-button>
+
+    <div class="ion-text-center" *ngIf="isLoading">
+      <ion-button shape="round" color="primary" [disabled]="!f1.valid">
+        <ion-spinner name="circles"></ion-spinner>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

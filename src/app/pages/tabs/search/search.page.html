@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-searchbar
+      animated="true"
+      debounce="800"
+      (ionChange)="onSearchChange($event)"
+      #searchInput
+      show-cancel-button="focus"
+      placeholder="Search"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-loading-artwork *ngIf="isLoading"></app-loading-artwork>
+
+  <app-empty-screen
+    *ngIf="!isLoading && (artworks.length == 0 || query?.length == 0)"
+    [model]="model"
+  ></app-empty-screen>
+
+  <ion-list *ngIf="!isLoading && artworks.length > 0">
+    <ion-list-header>
+      <ion-label>
+        <h4>Search results for "{{query}}"</h4>
+      </ion-label>
+    </ion-list-header>
+  </ion-list>
+  <app-artwork
+    *ngFor="let artwork of artworks"
+    [artwork]="artwork"
+    [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
+  ></app-artwork>
+</ion-content>
