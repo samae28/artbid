@@ -20,7 +20,7 @@
           <ion-card class="card-title-detail">
             <ion-card-header class="custom-header">
               <ion-card-subtitle *ngIf="artwork.isAuction"
-                >P {{artwork.currentBid}}</ion-card-subtitle
+                >P {{artwork.auction.currentBid}}</ion-card-subtitle
               >
             </ion-card-header>
           </ion-card>
@@ -45,7 +45,10 @@
           <ion-list lines="none">
             <ion-item>
               <ion-thumbnail slot="start">
-                <img [alt]="getArtist(artwork?.artistID).artistName" [src]="getArtist(artwork?.artistID).image" />
+                <img
+                  [alt]="getArtist(artwork?.artistID).artistName"
+                  [src]="getArtist(artwork?.artistID).image"
+                />
               </ion-thumbnail>
               <ion-label>{{getArtist(artwork?.artistID).artistName}}</ion-label>
             </ion-item>
@@ -55,9 +58,14 @@
           <ion-list lines="none">
             <ion-item>
               <ion-thumbnail slot="start">
-                <img [alt]="getArtMedium(artwork?.mediumID).mediumType" [src]="getArtMedium(artwork?.mediumID).image" />
+                <img
+                  [alt]="getArtMedium(artwork?.mediumID).mediumType"
+                  [src]="getArtMedium(artwork?.mediumID).image"
+                />
               </ion-thumbnail>
-              <ion-label>{{getArtMedium(artwork?.mediumID).mediumType}}</ion-label>
+              <ion-label
+                >{{getArtMedium(artwork?.mediumID).mediumType}}</ion-label
+              >
             </ion-item>
           </ion-list>
         </ion-col>

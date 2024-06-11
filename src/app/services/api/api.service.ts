@@ -103,6 +103,8 @@ export class ApiService {
                   item.auction.artworkID,
                   new Date(item.auction.startDate.seconds * 1000),
                   new Date(item.auction.endDate.seconds * 1000),
+                  item.auction.currentBid,
+                  item.auction.highestBid,
                   item.auction.bids
                 )
               : null;
@@ -133,6 +135,8 @@ export class ApiService {
             id, // Set the artwork ID here
             new Date(data.startDate), // Convert to Date object
             new Date(data.endDate), // Convert to Date object
+            data.price,
+            data.price,
             [] // Initialize with an empty array of bids
           )
         : null;

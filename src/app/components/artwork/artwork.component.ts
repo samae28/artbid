@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Artworks } from 'src/app/models/artworks.model';
 import { Mediums } from 'src/app/models/mediums.model';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -14,12 +15,19 @@ export class ArtworkComponent implements OnInit {
   id: any;
   mediums: Mediums[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
     console.log('Artwork:', this.artwork);
     console.log('Artists:', this.artists);
-    // This component no longer needs to load artworks, as it receives a single artwork as input.
+  }
+
+  onArtworkClick() {
+    console.log(
+      'Navigating to artwork detail with ID:',
+      this.artwork.artworkID
+    ); // Debugging
+    this.router.navigate(['/tabs/artwork-detail', this.artwork.artworkID]);
   }
 
   getData(artistID: string): string {

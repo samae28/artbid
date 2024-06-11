@@ -1,4 +1,4 @@
-<ion-item *ngIf="artwork" lines="none">
+<ion-item *ngIf="artwork" lines="none" (click)="onArtworkClick()">
   <ion-thumbnail slot="start">
     <img
       [src]="artwork?.image ? artwork.image : 'assets/images/art1.jpg'"

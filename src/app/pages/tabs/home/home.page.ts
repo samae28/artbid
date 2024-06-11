@@ -1,7 +1,9 @@
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Artworks } from 'src/app/models/artworks.model';
 import { ApiService } from 'src/app/services/api/api.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +22,9 @@ export class HomePage implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private firestore: AngularFirestore,
+    public afStorage: AngularFireStorage
   ) {}
 
   navigateToAuction(segment: string): void {
@@ -44,6 +48,10 @@ export class HomePage implements OnInit {
     }, 2000);
   }
 
+  openArtwork(artwork) {
+    this.router.navigate(['/tabs/artwork-detail', artwork.artworkID]);
+  }
+
   getBanners() {
     this.apiService
       .getBanners()
@@ -57,16 +65,17 @@ export class HomePage implements OnInit {
   }
 
   loadArtworks() {
-    this.apiService.getArtworks().subscribe((data: Artworks[]) => {
-      this.artwork = data;
-      this.auctionArtworks = this.artwork.filter(
-        (artwork) => artwork.isAuction === true || artwork.isAuction === 1
-      );
-      this.fixedPriceArtworks = this.artwork.filter(
-        (artwork) => artwork.isAuction === false || artwork.isAuction === 0
-      );
-      console.log('Auction Artworks:', this.auctionArtworks);
-      console.log('Fixed Price Artworks:', this.fixedPriceArtworks);
-    });
+    this.firestore
+      .collection<Artworks>('allArtworks')
+      .valueChanges()
+      .subscribe((data: Artworks[]) => {
+        this.artwork = data;
+        this.auctionArtworks = this.artwork.filter(
+          (artwork) => artwork.isAuction === true || artwork.isAuction === 1
+        );
+        this.fixedPriceArtworks = this.artwork.filter(
+          (artwork) => artwork.isAuction === false || artwork.isAuction === 0
+        );
+      });
   }
 }

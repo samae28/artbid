@@ -25,6 +25,7 @@
       <app-artwork
         *ngFor="let artwork of auctionArtworks"
         [artwork]="artwork"
+        (click)="openArtwork(artwork)"
       ></app-artwork>
     </ion-item-group>
   </ion-list>
@@ -41,6 +42,7 @@
       <app-artwork
         *ngFor="let artwork of fixedPriceArtworks"
         [artwork]="artwork"
+        [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
       ></app-artwork>
     </ion-item-group>
   </ion-list>

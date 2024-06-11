@@ -6,6 +6,8 @@ export class Auction {
     public artworkID: any,
     public startDate: Date,
     public endDate: Date,
+    public currentBid: number,
+    public highestBid: number,
     public bids: Bid[]
   ) {}
 }

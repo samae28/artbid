@@ -53,7 +53,7 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'artwork-detail/:artworkDetailId',
+    path: 'artwork-detail/:artworkID',
     loadChildren: () =>
       import('./artwork-detail/artwork-detail.module').then(
         (m) => m.ArtworkDetailPageModule

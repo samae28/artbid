@@ -19,7 +19,7 @@ export class AddArtworkPage implements OnInit {
   @ViewChild('filePicker', { static: false }) filePickerRef: ElementRef;
   isLoading: boolean = false;
   isAuction: boolean = false;
-  auction: Auction = new Auction('', '', new Date(), new Date(), []);
+  auction: Auction = new Auction('', '', new Date(), new Date(), 0, 0, []);
   mediums: Mediums[] = [];
   image: string | ArrayBuffer | null = null;
   artworks: Artworks[] = [];
@@ -118,6 +118,8 @@ export class AddArtworkPage implements OnInit {
               artworkID: null, // This will be set after adding the artwork
               startDate: new Date(form.value.startDate), // Convert to Date object
               endDate: new Date(form.value.endDate), // Convert to Date object
+              currentBid: form.value.price, // Set currentBid to the initial price
+              highestBid: form.value.price, // Set highestBid to the initial price
               bids: [],
             }
           : null,
