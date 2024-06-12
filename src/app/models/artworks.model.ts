@@ -1,4 +1,5 @@
 import { Auction } from './auction.model';
+import { Bid } from './bid.model';
 
 export class Artworks {
   constructor(

@@ -48,9 +48,9 @@ export class HomePage implements OnInit {
     }, 2000);
   }
 
-  openArtwork(artwork) {
-    this.router.navigate(['/tabs/artwork-detail', artwork.artworkID]);
-  }
+  // openArtwork(artwork) {
+  //   this.router.navigate(['/tabs/artwork-detail', artwork.artworkID]);
+  // }
 
   getBanners() {
     this.apiService

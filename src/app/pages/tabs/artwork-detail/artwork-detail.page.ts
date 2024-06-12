@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api/api.service';
-
 import { Observable, Subscription, timer } from 'rxjs';
 import { map, takeWhile } from 'rxjs/operators';
 import { Mediums } from 'src/app/models/mediums.model';
@@ -20,13 +19,15 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
   artwork: Artworks;
   artworks: Artworks[] = [];
   countdown: string | undefined;
-  private timerSubscription: Subscription = new Subscription();
-  userBid: number = 0; // Change from string array to number
+  userBid: number = 0;
   showInputField: boolean = false;
   userInput: string = '';
   mediums: Mediums[] = [];
+  medium: Mediums;
   artists: any[] = [];
-  private subscription: Subscription;
+  private timerSubscription: Subscription = new Subscription();
+  private artworkSubscription: Subscription;
+  private mediumSubscription: Subscription;
 
   constructor(
     private apiService: ApiService,
@@ -49,14 +50,23 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
   }
 
   fetchArtworkDetail() {
-    this.subscription = this.firestore
-      .collection('allArtworks')
-      .doc(this.id)
-      .valueChanges()
-      .subscribe((data) => {
-        if (data) {
-          this.artwork = data as Artworks;
+    this.artworkSubscription = this.apiService
+      .getArtworks()
+      .subscribe((artworks: Artworks[]) => {
+        this.artwork = artworks.find(
+          (artwork) => artwork.artworkID === this.id
+        );
+        if (this.artwork) {
+          this.fetchMediumDetail(this.artwork.mediumID); // Fetch medium details
         }
+      });
+  }
+
+  fetchMediumDetail(mediumID: string) {
+    this.mediumSubscription = this.apiService
+      .getMediums()
+      .subscribe((mediums: Mediums[]) => {
+        this.medium = mediums.find((medium) => medium.mediumID === mediumID);
       });
   }
 
@@ -84,9 +94,9 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
         (medium) => medium.mediumID.toString() === mediumID.toString()
       );
       console.log('Found Medium:', medium);
-      return medium || { artMediumName: 'Unknown Medium' };
+      return medium || { mediumType: 'Unknown Medium' };
     } else {
-      return { artMediumName: 'Unknown Medium' };
+      return { mediumType: 'Unknown Medium' };
     }
   }
 
@@ -177,5 +187,11 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.timerSubscription.unsubscribe();
+    if (this.artworkSubscription) {
+      this.artworkSubscription.unsubscribe();
+    }
+    if (this.mediumSubscription) {
+      this.mediumSubscription.unsubscribe();
+    }
   }
 }

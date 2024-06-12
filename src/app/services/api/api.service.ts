@@ -73,8 +73,9 @@ export class ApiService {
   }
 
   getMediums(): Observable<Mediums[]> {
-    return this.collection('mediums')
-      .valueChanges({ idField: 'mediumID' }) // Ensure 'id' field is included as 'mediumID'
+    return this.adb
+      .collection('mediums')
+      .valueChanges({ idField: 'mediumID' })
       .pipe(
         map((data: any[]) =>
           data.map(

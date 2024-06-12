@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Artworks } from 'src/app/models/artworks.model';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -67,6 +67,11 @@ export class ArtworkMediumPage implements OnInit {
         console.error('Error loading mediums:', error);
       }
     );
+  }
+
+  onArtworkClick(artwork: Artworks) {
+    console.log('Navigating to artwork detail with ID:', artwork.artworkID); // Debugging statement
+    this.navCtrl.navigateForward(['/tabs/artwork-detail', artwork.artworkID]);
   }
 
   getBackHref(): string {

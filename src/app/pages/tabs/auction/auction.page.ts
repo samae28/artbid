@@ -1,5 +1,8 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Artworks } from 'src/app/models/artworks.model';
 import { ApiService } from 'src/app/services/api/api.service';
 
 @Component({
@@ -8,19 +11,20 @@ import { ApiService } from 'src/app/services/api/api.service';
   styleUrls: ['./auction.page.scss'],
 })
 export class AuctionPage implements OnInit {
-  artworks: any[] = [];
-  @Input() artwork: any;
+  artworks: Artworks[] = [];
   isLoading: boolean = false;
-  selectedSegment: 'current' | 'upcoming' | 'past';
-  currentAuctions: any[];
-  upcomingAuctions: any[];
-  pastAuctions: any[];
+  selectedSegment: 'current' | 'upcoming' | 'past' = 'current';
+  currentAuctions: Artworks[] = [];
+  upcomingAuctions: Artworks[] = [];
+  pastAuctions: Artworks[] = [];
 
   constructor(
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
-    private api: ApiService
+    private apiService: ApiService,
+    private firestore: AngularFirestore,
+    public afStorage: AngularFireStorage
   ) {}
 
   ngOnInit() {
@@ -29,50 +33,70 @@ export class AuctionPage implements OnInit {
     });
     this.isLoading = true;
 
-    setTimeout(() => {
-      // this.artworks = this.api.getAuctionArtworks();
-      this.artworks = this.api.artworks;
-      this.filterAuctions();
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    }, 2000);
+    this.loadArtworks();
+  }
+
+  loadArtworks() {
+    this.firestore
+      .collection('allArtworks')
+      .snapshotChanges()
+      .subscribe((snapshot) => {
+        this.artworks = snapshot.map((doc) => {
+          const data = doc.payload.doc.data() as Artworks;
+          const id = doc.payload.doc.id;
+          return { ...data, artworkID: id };
+        });
+        this.filterAuctions();
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      });
   }
 
   changeSegment(event: CustomEvent) {
-    const selectedSegment = event.detail.value as 'current' | 'upcoming' | 'past';
+    const selectedSegment = event.detail.value as
+      | 'current'
+      | 'upcoming'
+      | 'past';
     this.selectedSegment = selectedSegment;
 
-    // Update the URL based on the selected segment
-    this.router.navigate(['/tabs/auction'], {
+    this.router.navigate([], {
+      relativeTo: this.route,
       queryParams: { segment: selectedSegment },
+      queryParamsHandling: 'merge',
     });
   }
 
   filterAuctions() {
     const currentDate = new Date();
     this.currentAuctions = this.artworks.filter((artwork) => {
-      if (artwork.isAuction && artwork.auction?.length > 0) { // Check if artwork is an auction and has auction data
-        const auction = artwork.auction[0]; // Assuming each artwork has only one auction entry
-        return auction.startDate <= currentDate && auction.endDate >= currentDate;
+      if (artwork.isAuction && artwork.auction) {
+        const auction = artwork.auction;
+        return (
+          auction.startDate <= currentDate && auction.endDate >= currentDate
+        );
       }
-      return false; // Skip artworks that are not auctions or have no auction data
+      return false;
     });
-  
+
     this.upcomingAuctions = this.artworks.filter((artwork) => {
-      if (artwork.isAuction && artwork.auction?.length > 0) {
-        const auction = artwork.auction[0];
+      if (artwork.isAuction && artwork.auction) {
+        const auction = artwork.auction;
         return auction.startDate > currentDate;
       }
       return false;
     });
-  
+
     this.pastAuctions = this.artworks.filter((artwork) => {
-      if (artwork.isAuction && artwork.auction?.length > 0) {
-        const auction = artwork.auction[0];
+      if (artwork.isAuction && artwork.auction) {
+        const auction = artwork.auction;
         return auction.endDate < currentDate;
       }
       return false;
     });
   }
-}
 
+  onArtworkClick(artwork: Artworks) {
+    console.log('Navigating to artwork detail with ID:', artwork.artworkID); // Debugging statement
+    this.router.navigate(['/tabs/artwork-detail', artwork.artworkID]);
+  }
+}

@@ -7,10 +7,10 @@
     </ion-buttons>
   </div>
   <div class="artwork-background">
-    <img [src]="artwork.image" [alt]="artwork.title" />
+    <img *ngIf="artwork?.image" [src]="artwork.image" [alt]="artwork.title" />
   </div>
 
-  <ion-card class="custom-ion-card">
+  <ion-card class="custom-ion-card" *ngIf="artwork">
     <ion-card class="custom-card-detail">
       <ion-row>
         <ion-col size="5">
@@ -20,7 +20,7 @@
           <ion-card class="card-title-detail">
             <ion-card-header class="custom-header">
               <ion-card-subtitle *ngIf="artwork.isAuction"
-                >P {{artwork.auction.currentBid}}</ion-card-subtitle
+                >P {{ artwork.auction.currentBid }}</ion-card-subtitle
               >
             </ion-card-header>
           </ion-card>
@@ -33,7 +33,7 @@
           </ion-card-header>
           <ion-card class="card-title-detail">
             <ion-card-header class="custom-header">
-              <ion-card-subtitle>{{countdown}}</ion-card-subtitle>
+              <ion-card-subtitle>{{ countdown }}</ion-card-subtitle>
             </ion-card-header>
           </ion-card>
         </ion-col>
@@ -44,13 +44,15 @@
         <ion-col>
           <ion-list lines="none">
             <ion-item>
-              <ion-thumbnail slot="start">
+              <ion-thumbnail slot="start" *ngIf="getArtist(artwork?.artistID)">
                 <img
                   [alt]="getArtist(artwork?.artistID).artistName"
                   [src]="getArtist(artwork?.artistID).image"
                 />
               </ion-thumbnail>
-              <ion-label>{{getArtist(artwork?.artistID).artistName}}</ion-label>
+              <ion-label
+                >{{ getArtist(artwork?.artistID).artistName }}</ion-label
+              >
             </ion-item>
           </ion-list>
         </ion-col>
@@ -59,20 +61,20 @@
             <ion-item>
               <ion-thumbnail slot="start">
                 <img
-                  [alt]="getArtMedium(artwork?.mediumID).mediumType"
-                  [src]="getArtMedium(artwork?.mediumID).image"
+                  [alt]="getArtMedium(artwork?.mediumID)?.mediumType"
+                  [src]="getArtMedium(artwork?.mediumID)?.image"
                 />
               </ion-thumbnail>
               <ion-label
-                >{{getArtMedium(artwork?.mediumID).mediumType}}</ion-label
+                >{{ getArtMedium(artwork?.mediumID)?.mediumType }}</ion-label
               >
             </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>
-      <ion-card-title>{{artwork.title}}</ion-card-title>
+      <ion-card-title>{{ artwork.title }}</ion-card-title>
     </ion-card-header>
-    <ion-card-content> {{artwork.description}} </ion-card-content>
+    <ion-card-content> {{ artwork.description }} </ion-card-content>
 
     <ion-item>
       <ion-label position="floating">Enter Value</ion-label>
