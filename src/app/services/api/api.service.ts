@@ -93,12 +93,13 @@ export class ApiService {
   }
 
   getArtworks(): Observable<Artworks[]> {
-    return this.collection('allArtworks')
-      .valueChanges()
+    return this.adb
+      .collection('allArtworks')
+      .valueChanges({ idField: 'artworkID' })
       .pipe(
         map((data: any[]) =>
           data.map((item) => {
-            let auction = item.auction
+            const auction = item.auction
               ? new Auction(
                   item.auction.auctionID,
                   item.auction.artworkID,
@@ -125,6 +126,10 @@ export class ApiService {
           })
         )
       );
+  }
+
+  getArtist(artistID: string): Observable<any> {
+    return this.adb.collection('artists').doc(artistID).valueChanges();
   }
 
   async addArtworkItem(data: any): Promise<boolean> {

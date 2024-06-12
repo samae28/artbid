@@ -19,9 +19,9 @@
           </ion-card-header>
           <ion-card class="card-title-detail">
             <ion-card-header class="custom-header">
-              <ion-card-subtitle *ngIf="artwork.isAuction"
-                >P {{ artwork.auction.currentBid }}</ion-card-subtitle
-              >
+              <ion-card-subtitle *ngIf="artwork.isAuction">
+                P {{ getHighestBid(artwork) }}
+              </ion-card-subtitle>
             </ion-card-header>
           </ion-card>
         </ion-col>
@@ -60,21 +60,16 @@
           <ion-list lines="none">
             <ion-item>
               <ion-thumbnail slot="start">
-                <img
-                  [alt]="getArtMedium(artwork?.mediumID)?.mediumType"
-                  [src]="getArtMedium(artwork?.mediumID)?.image"
-                />
+                <img [src]="medium?.image" [alt]="medium?.mediumType" />
               </ion-thumbnail>
-              <ion-label
-                >{{ getArtMedium(artwork?.mediumID)?.mediumType }}</ion-label
-              >
+              <ion-label>{{ medium?.mediumType }}</ion-label>
             </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>
       <ion-card-title>{{ artwork.title }}</ion-card-title>
     </ion-card-header>
-    <ion-card-content> {{ artwork.description }} </ion-card-content>
+    <ion-card-content>{{ artwork.description }}</ion-card-content>
 
     <ion-item>
       <ion-label position="floating">Enter Value</ion-label>

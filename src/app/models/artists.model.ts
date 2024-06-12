@@ -4,6 +4,6 @@ export class Artists {
     public artistName: string,
     public bio: string,
     public image: string,
-    public remarks: number
+    public remarks?: string
   ) {}
 }

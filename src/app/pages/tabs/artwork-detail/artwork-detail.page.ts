@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api/api.service';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Observable, Subscription, combineLatest, timer } from 'rxjs';
 import { map, takeWhile } from 'rxjs/operators';
 import { Mediums } from 'src/app/models/mediums.model';
 import { Artworks } from 'src/app/models/artworks.model';
@@ -28,6 +28,7 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
   private timerSubscription: Subscription = new Subscription();
   private artworkSubscription: Subscription;
   private mediumSubscription: Subscription;
+  private artistSubscription: Subscription;
 
   constructor(
     private apiService: ApiService,
@@ -45,58 +46,73 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
         this.navCtrl.back();
         return;
       }
-      this.fetchArtworkDetail();
+      this.getArtworkDetail();
     });
   }
 
-  fetchArtworkDetail() {
-    this.artworkSubscription = this.apiService
-      .getArtworks()
-      .subscribe((artworks: Artworks[]) => {
-        this.artwork = artworks.find(
-          (artwork) => artwork.artworkID === this.id
-        );
-        if (this.artwork) {
-          this.fetchMediumDetail(this.artwork.mediumID); // Fetch medium details
-        }
-      });
+  getArtworkDetail() {
+    this.artworkSubscription = combineLatest([
+      this.apiService.getArtworks(),
+      this.apiService.getMediums(),
+    ]).subscribe(([artworks, mediums]) => {
+      this.artworks = artworks;
+      this.mediums = mediums;
+
+      this.artwork = this.artworks.find(
+        (artwork) => artwork.artworkID === this.id
+      );
+      if (!this.artwork) {
+        console.error('Artwork not found');
+        return;
+      }
+
+      this.medium = this.mediums.find(
+        (medium) => medium.mediumID === this.artwork.mediumID.id
+      );
+      if (!this.medium) {
+        console.error('Medium not found for artwork');
+      }
+
+      // this.getArtistDetail(this.artwork.artistID);
+      this.displayArtworkDetail();
+    });
   }
 
-  fetchMediumDetail(mediumID: string) {
-    this.mediumSubscription = this.apiService
-      .getMediums()
-      .subscribe((mediums: Mediums[]) => {
-        this.medium = mediums.find((medium) => medium.mediumID === mediumID);
-      });
+  displayArtworkDetail() {
+    if (!this.mediums || this.mediums.length === 0) {
+      console.error('No mediums available');
+      return;
+    }
+
+    if (!this.medium) {
+      console.error('Medium not found for artwork');
+      return;
+    }
+  }
+
+  getMediumImage(mediumID: string): string {
+    const medium = this.mediums.find((medium) => medium.mediumID === mediumID);
+    return medium ? medium.image : 'default_image_url';
+  }
+
+  getMediumType(artwork: Artworks): string {
+    if (artwork.mediumID) {
+      const medium = this.mediums.find(
+        (medium) => medium.mediumID === artwork.mediumID.id
+      );
+      return medium ? medium.mediumType : 'Unknown Medium';
+    }
+    return 'Medium ID not provided';
   }
 
   getArtist(artistID: any): any {
-    console.log('Artists:', this.artists);
-    console.log('ArtistsID to find:', artistID);
-
     if (this.artists) {
       const artist = this.artists.find(
         (artist) => artist.artistID.toString() === artistID.toString()
       );
-      console.log('Found Artist:', artist);
       return artist || { artistName: 'Unknown Artist' };
     } else {
       return { artistName: 'Unknown Artist' };
-    }
-  }
-
-  getArtMedium(mediumID: any): any {
-    console.log('Mediums:', this.mediums);
-    console.log('MediumID to find:', mediumID);
-
-    if (this.mediums) {
-      const medium = this.mediums.find(
-        (medium) => medium.mediumID.toString() === mediumID.toString()
-      );
-      console.log('Found Medium:', medium);
-      return medium || { mediumType: 'Unknown Medium' };
-    } else {
-      return { mediumType: 'Unknown Medium' };
     }
   }
 
@@ -149,40 +165,27 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-    return `${days} : ${this.padZero(hours)} : ${this.padZero(
-      minutes
-    )} : ${this.padZero(seconds)}`;
-  }
-
-  padZero(num: number): string {
-    return num < 10 ? '0' + num : num.toString();
+    return `${days.toString().padStart(2, '0')}:${hours
+      .toString()
+      .padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
+      .toString()
+      .padStart(2, '0')}`;
   }
 
   placeBid() {
-    if (this.userBid > this.artwork.auction.currentBid) {
-      this.artwork.auction.bids.push({
-        bidderID: 'You',
-        bidAmount: this.userBid,
-        bidTime: new Date().toISOString(),
-      });
-      this.artwork.auction.currentBid = this.userBid;
-    } else {
-      console.log('Your bid must be higher than the current highest bid.');
-    }
+    // Implement the logic to place a bid
+    console.log('Place bid logic here');
   }
 
-  getCurrentHighestBid(): number {
-    const bidAmounts = this.artwork.auction.bids.map((bid) => bid.bidAmount);
-    const maxBid = Math.max(...bidAmounts);
-    return maxBid || 0;
-  }
-
-  toggleInputField() {
-    this.showInputField = !this.showInputField;
-
-    if (!this.showInputField) {
-      this.userInput = '';
+  getHighestBid(artwork: Artworks): number {
+    if (artwork.isAuction && artwork.auction && artwork.auction.bids) {
+      const highestBid = artwork.auction.bids.reduce(
+        (max, bid) => (bid.bidAmount > max ? bid.bidAmount : max),
+        0
+      );
+      return highestBid || artwork.price;
     }
+    return artwork.price;
   }
 
   ngOnDestroy() {
