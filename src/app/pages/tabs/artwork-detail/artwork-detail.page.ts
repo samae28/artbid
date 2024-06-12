@@ -8,6 +8,8 @@ import { Mediums } from 'src/app/models/mediums.model';
 import { Artworks } from 'src/app/models/artworks.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import firebase from 'firebase/compat/app';
 
 @Component({
   selector: 'app-artwork-detail',
@@ -36,7 +38,8 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private firestore: AngularFirestore,
-    public afStorage: AngularFireStorage
+    public afStorage: AngularFireStorage,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -73,8 +76,8 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
         console.error('Medium not found for artwork');
       }
 
-      // this.getArtistDetail(this.artwork.artistID);
       this.displayArtworkDetail();
+      this.startCountdown(); // Start countdown when artwork detail is loaded
     });
   }
 
@@ -172,9 +175,53 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
       .padStart(2, '0')}`;
   }
 
-  placeBid() {
-    // Implement the logic to place a bid
-    console.log('Place bid logic here');
+  async placeBid() {
+    try {
+      const user = await this.authService.getCurrentUser();
+      if (!user) {
+        console.error('User not authenticated');
+        return;
+      }
+
+      const bidAmount = this.userBid;
+      if (bidAmount <= 0) {
+        console.error('Invalid bid amount');
+        return;
+      }
+
+      const highestBid = this.getHighestBid(this.artwork);
+      if (bidAmount <= highestBid) {
+        console.error('Bid amount must be higher than the current highest bid');
+        return;
+      }
+
+      const bid = {
+        bidAmount,
+        userID: user.uid,
+        timestamp: new Date(),
+      };
+
+      const artworkDoc = this.firestore
+        .collection('allArtworks')
+        .doc(this.artwork.artworkID);
+
+      await this.firestore.firestore.runTransaction(async (transaction) => {
+        const doc = await transaction.get(artworkDoc.ref);
+        if (!doc.exists) {
+          throw new Error('Artwork document does not exist');
+        }
+
+        transaction.update(artworkDoc.ref, {
+          'auction.bids': firebase.firestore.FieldValue.arrayUnion(bid),
+          'auction.highestBid': bidAmount,
+          'auction.currentBid': bidAmount,
+        });
+      });
+
+      console.log('Bid placed successfully');
+    } catch (error) {
+      console.error('Error placing bid:', error);
+    }
   }
 
   getHighestBid(artwork: Artworks): number {

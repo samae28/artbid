@@ -1,4 +1,5 @@
 <ion-content [fullscreen]="true" class="scroll">
+  <!-- Back button and artwork image -->
   <div>
     <ion-buttons slot="start">
       <ion-back-button color="light" defaultHref="/tabs/home">
@@ -10,6 +11,7 @@
     <img *ngIf="artwork?.image" [src]="artwork.image" [alt]="artwork.title" />
   </div>
 
+  <!-- Artwork details card -->
   <ion-card class="custom-ion-card" *ngIf="artwork">
     <ion-card class="custom-card-detail">
       <ion-row>
@@ -39,6 +41,8 @@
         </ion-col>
       </ion-row>
     </ion-card>
+
+    <!-- Artwork and artist details -->
     <ion-card-header class="card-content">
       <ion-row>
         <ion-col>
@@ -71,9 +75,14 @@
     </ion-card-header>
     <ion-card-content>{{ artwork.description }}</ion-card-content>
 
+    <!-- Bid input and button -->
     <ion-item>
       <ion-label position="floating">Enter Value</ion-label>
-      <ion-input placeholder="Enter" id="uniqueInputId"></ion-input>
+      <ion-input
+        placeholder="Enter"
+        [(ngModel)]="userBid"
+        type="number"
+      ></ion-input>
     </ion-item>
     <ion-button expand="block" *ngIf="artwork.isAuction" (click)="placeBid()"
       >Place Bid</ion-button

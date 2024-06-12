@@ -31,6 +31,10 @@ export class AuthService {
     }
   }
 
+  async getCurrentUser(): Promise<any> {
+    return this.fireAuth.currentUser;
+  }
+
   async getId() {
     return (await this.storage.getStorage('uid')).value;
   }

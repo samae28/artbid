@@ -132,43 +132,83 @@ export class ApiService {
     return this.adb.collection('artists').doc(artistID).valueChanges();
   }
 
+  // async addArtworkItem(data: any): Promise<boolean> {
+  //   try {
+  //     const id = this.randomString();
+  //     const auction = data.isAuction
+  //       ? new Auction(
+  //           this.randomString(),
+  //           id, // Set the artwork ID here
+  //           new Date(data.startDate), // Convert to Date object
+  //           new Date(data.endDate), // Convert to Date object
+  //           data.price,
+  //           data.price,
+  //           [] // Initialize with an empty array of bids
+  //         )
+  //       : null;
+
+  //     const artwork = new Artworks(
+  //       id,
+  //       this.firestore.collection('mediums').doc(data.mediumID),
+  //       data.title,
+  //       data.description,
+  //       data.image,
+  //       data.price,
+  //       'active', // Ensure status is always defined
+  //       auction,
+  //       data.isAuction ? 1 : 0,
+  //       data.artistID || 'defaultArtistID' // Provide a default value if artistID is missing
+  //     );
+
+  //     // Convert instances to plain objects
+  //     let plainArtwork = Object.assign({}, artwork);
+  //     if (plainArtwork.auction) {
+  //       plainArtwork.auction = Object.assign({}, plainArtwork.auction);
+  //     }
+
+  //     await this.firestore.collection('allArtworks').doc(id).set(plainArtwork);
+  //     return true;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
   async addArtworkItem(data: any): Promise<boolean> {
     try {
       const id = this.randomString();
       const auction = data.isAuction
-        ? new Auction(
-            this.randomString(),
-            id, // Set the artwork ID here
-            new Date(data.startDate), // Convert to Date object
-            new Date(data.endDate), // Convert to Date object
-            data.price,
-            data.price,
-            [] // Initialize with an empty array of bids
-          )
+        ? {
+            auctionID: this.randomString(),
+            artworkID: id,
+            startDate: firebase.firestore.Timestamp.fromDate(
+              new Date(data.startDate)
+            ),
+            endDate: firebase.firestore.Timestamp.fromDate(
+              new Date(data.endDate)
+            ),
+            currentBid: data.price,
+            highestBid: data.price,
+            bids: [],
+          }
         : null;
 
-      const artwork = new Artworks(
-        id,
-        this.firestore.collection('mediums').doc(data.mediumID),
-        data.title,
-        data.description,
-        data.image,
-        data.price,
-        'active', // Ensure status is always defined
-        auction,
-        data.isAuction ? 1 : 0,
-        data.artistID || 'defaultArtistID' // Provide a default value if artistID is missing
-      );
+      const artwork = {
+        artworkID: id,
+        mediumID: this.firestore.doc(`mediums/${data.mediumID}`),
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        price: data.price,
+        status: 'active',
+        auction: auction,
+        isAuction: data.isAuction ? 1 : 0,
+        artistID: data.artistID || 'defaultArtistID',
+      };
 
-      // Convert instances to plain objects
-      let plainArtwork = Object.assign({}, artwork);
-      if (plainArtwork.auction) {
-        plainArtwork.auction = Object.assign({}, plainArtwork.auction);
-      }
-
-      await this.firestore.collection('allArtworks').doc(id).set(plainArtwork);
+      await this.firestore.collection('allArtworks').doc(id).set(artwork);
       return true;
     } catch (e) {
+      console.error('Error adding artwork item:', e);
       throw e;
     }
   }
