@@ -4,6 +4,10 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Artworks } from 'src/app/models/artworks.model';
 import { ApiService } from 'src/app/services/api/api.service';
+// import * as firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-auction',
@@ -44,6 +48,23 @@ export class AuctionPage implements OnInit {
         this.artworks = snapshot.map((doc) => {
           const data = doc.payload.doc.data() as Artworks;
           const id = doc.payload.doc.id;
+
+          // Ensure auction dates are Date objects
+          if (data.auction) {
+            const auction = data.auction as {
+              startDate: firebase.firestore.Timestamp;
+              endDate: firebase.firestore.Timestamp;
+            };
+
+            // Convert Timestamp to Date
+            if (auction.startDate && !(auction.startDate instanceof Date)) {
+              data.auction.startDate = auction.startDate.toDate();
+            }
+            if (auction.endDate && !(auction.endDate instanceof Date)) {
+              data.auction.endDate = auction.endDate.toDate();
+            }
+          }
+
           return { ...data, artworkID: id };
         });
         this.filterAuctions();
@@ -68,9 +89,17 @@ export class AuctionPage implements OnInit {
 
   filterAuctions() {
     const currentDate = new Date();
+    console.log('Current Date:', currentDate); // Debugging statement
+
     this.currentAuctions = this.artworks.filter((artwork) => {
       if (artwork.isAuction && artwork.auction) {
         const auction = artwork.auction;
+        console.log(
+          'Current Auction - Start Date:',
+          auction.startDate,
+          'End Date:',
+          auction.endDate
+        ); // Debugging statement
         return (
           auction.startDate <= currentDate && auction.endDate >= currentDate
         );
@@ -81,6 +110,7 @@ export class AuctionPage implements OnInit {
     this.upcomingAuctions = this.artworks.filter((artwork) => {
       if (artwork.isAuction && artwork.auction) {
         const auction = artwork.auction;
+        console.log('Upcoming Auction - Start Date:', auction.startDate); // Debugging statement
         return auction.startDate > currentDate;
       }
       return false;
@@ -89,10 +119,15 @@ export class AuctionPage implements OnInit {
     this.pastAuctions = this.artworks.filter((artwork) => {
       if (artwork.isAuction && artwork.auction) {
         const auction = artwork.auction;
+        console.log('Past Auction - End Date:', auction.endDate); // Debugging statement
         return auction.endDate < currentDate;
       }
       return false;
     });
+
+    console.log('Current Auctions:', this.currentAuctions); // Debugging statement
+    console.log('Upcoming Auctions:', this.upcomingAuctions); // Debugging statement
+    console.log('Past Auctions:', this.pastAuctions); // Debugging statement
   }
 
   onArtworkClick(artwork: Artworks) {

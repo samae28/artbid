@@ -1,17 +1,17 @@
-<ion-item lines="none" *ngIf="artwork">
+<ion-item lines="none">
   <ion-thumbnail slot="start">
     <img
-      [src]="artwork.image ? artwork.image : 'assets/images/art1.jpg'"
+      [src]="artwork?.image ? artwork.image : 'assets/images/art1.jpg'"
       alt=""
     />
   </ion-thumbnail>
   <ion-label>
-    <h4>{{ artwork.artist }}</h4>
+    <h4>{{ getData(artwork?.artistID) }}</h4>
     <ion-text color="medium">
-      <p class="pStyle">{{ artwork.title }}</p>
-      <p>Starting Bid: P{{ artwork.startingBid }}</p>
+      <p class="pStyle">{{ artwork?.title }}</p>
+      <p>Starting Bid: P{{ artwork?.price }}</p>
       <ion-text color="tertiary">
-        <p class="distance">Current Bid: {{ getHighestBid() }}</p>
+        <p class="distance">Current Bid: {{ getHighestBid(artwork) }}</p>
       </ion-text>
     </ion-text>
   </ion-label>

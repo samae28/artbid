@@ -103,8 +103,8 @@ export class ApiService {
               ? new Auction(
                   item.auction.auctionID,
                   item.auction.artworkID,
-                  new Date(item.auction.startDate.seconds * 1000),
-                  new Date(item.auction.endDate.seconds * 1000),
+                  item.auction.startDate, // Keep as Timestamp
+                  item.auction.endDate, // Keep as Timestamp
                   item.auction.currentBid,
                   item.auction.highestBid,
                   item.auction.bids

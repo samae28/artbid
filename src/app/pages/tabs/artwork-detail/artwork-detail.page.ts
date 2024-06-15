@@ -77,7 +77,17 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
       }
 
       this.displayArtworkDetail();
-      this.startCountdown(); // Start countdown when artwork detail is loaded
+
+      // Only start countdown if the auction has started
+      const currentDate = new Date();
+      if (
+        this.artwork.auction &&
+        currentDate >= this.artwork.auction.startDate
+      ) {
+        this.startCountdown(); // Start countdown when artwork detail is loaded and auction has started
+      } else {
+        this.countdown = 'Auction not started';
+      }
     });
   }
 
@@ -159,8 +169,34 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
   }
 
   calculateTimeRemaining(currentTime: Date): string {
-    const timeDiff =
-      this.artwork.auction.endDate.getTime() - currentTime.getTime();
+    // Ensure startDate and endDate are Date objects
+    let startDate: Date;
+    let endDate: Date;
+
+    if (
+      this.artwork.auction.startDate instanceof firebase.firestore.Timestamp
+    ) {
+      startDate = this.artwork.auction.startDate.toDate();
+    } else {
+      startDate = this.artwork.auction.startDate;
+    }
+
+    if (this.artwork.auction.endDate instanceof firebase.firestore.Timestamp) {
+      endDate = this.artwork.auction.endDate.toDate();
+    } else {
+      endDate = this.artwork.auction.endDate;
+    }
+
+    // Calculate time remaining based on current time and auction start/end dates
+    let timeDiff: number;
+    if (currentTime < startDate) {
+      // Auction hasn't started yet, countdown to start date
+      return 'Auction not started';
+    } else {
+      // Auction has started, countdown to end date
+      timeDiff = endDate.getTime() - currentTime.getTime();
+    }
+
     const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     const hours = Math.floor(
       (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)

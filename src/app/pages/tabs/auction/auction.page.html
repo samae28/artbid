@@ -13,9 +13,12 @@
 
   <!-- Current Auctions -->
   <div *ngIf="selectedSegment === 'current'">
+    <br />
+    <br />
+    <br />
     <ion-list *ngIf="!isLoading">
       <ion-item-group *ngIf="currentAuctions?.length > 0">
-        <ion-item
+        <div
           *ngFor="let artwork of currentAuctions"
           (click)="onArtworkClick(artwork)"
         >
@@ -23,7 +26,7 @@
             [artwork]="artwork"
             [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
           ></app-auction-current>
-        </ion-item>
+        </div>
       </ion-item-group>
       <ion-note *ngIf="currentAuctions?.length === 0"
         >No current auctions.</ion-note
@@ -33,9 +36,13 @@
 
   <!-- Upcoming Auctions -->
   <div *ngIf="selectedSegment === 'upcoming'">
+    <br />
+    <br />
+    <br />
+    <br />
     <ion-list *ngIf="!isLoading">
       <ion-item-group *ngIf="upcomingAuctions?.length > 0">
-        <ion-item
+        <div
           *ngFor="let artwork of upcomingAuctions"
           (click)="onArtworkClick(artwork)"
         >
@@ -43,7 +50,7 @@
             [artwork]="artwork"
             [routerLink]="['/', 'tabs', 'artwork-detail', artwork.artworkID]"
           ></app-auction-upcoming>
-        </ion-item>
+        </div>
       </ion-item-group>
       <ion-note *ngIf="upcomingAuctions?.length === 0"
         >No upcoming auctions.</ion-note
