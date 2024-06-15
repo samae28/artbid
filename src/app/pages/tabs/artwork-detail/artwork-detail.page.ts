@@ -189,11 +189,15 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
 
     // Calculate time remaining based on current time and auction start/end dates
     let timeDiff: number;
+
     if (currentTime < startDate) {
       // Auction hasn't started yet, countdown to start date
       return 'Auction not started';
+    } else if (currentTime > endDate) {
+      // Auction has ended
+      return 'Auction has ended';
     } else {
-      // Auction has started, countdown to end date
+      // Auction is ongoing, countdown to end date
       timeDiff = endDate.getTime() - currentTime.getTime();
     }
 
@@ -222,6 +226,17 @@ export class ArtworkDetailPage implements OnInit, OnDestroy {
       const bidAmount = this.userBid;
       if (bidAmount <= 0) {
         console.error('Invalid bid amount');
+        return;
+      }
+
+      const currentTime = new Date();
+      const timeState = this.calculateTimeRemaining(currentTime);
+
+      if (timeState === 'Auction not started') {
+        console.error('Auction not started yet. You cannot place a bid.');
+        return;
+      } else if (timeState === 'Auction has ended') {
+        console.error('Auction has ended. Your bid is not recorded.');
         return;
       }
 
