@@ -24,9 +24,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { TimestampToDatePipe } from './timestamp-to-date.pipe';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, TimestampToDatePipe],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

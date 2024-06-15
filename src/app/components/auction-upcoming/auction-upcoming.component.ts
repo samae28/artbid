@@ -3,6 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Artworks } from 'src/app/models/artworks.model';
 import { Mediums } from 'src/app/models/mediums.model';
 
+import { Auction } from 'src/app/models/auction.model';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore'; // Import Firestore specifically if needed
+import { ApiService } from 'src/app/services/api/api.service';
+
 @Component({
   selector: 'app-auction-upcoming',
   templateUrl: './auction-upcoming.component.html',
@@ -11,11 +16,22 @@ import { Mediums } from 'src/app/models/mediums.model';
 export class AuctionUpcomingComponent implements OnInit {
   selectedSegment: string = 'upcoming';
   @Input() artwork: Artworks;
+  artworksList: Artworks[] = [];
   mediums: Mediums[] = [];
-  constructor() {}
+
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    console.log('Artwork array:', this.artwork);
+    this.apiService.getArtworks().subscribe((data) => {
+      this.artworksList = data;
+    });
+  }
+
+  convertTimestampToDate(timestamp: firebase.firestore.Timestamp | Date): Date {
+    if (timestamp instanceof firebase.firestore.Timestamp) {
+      return timestamp.toDate();
+    }
+    return timestamp; // Return as is if already a Date object
   }
 
   getData(artistID: string): string {

@@ -11,7 +11,13 @@
       <p class="pStyle">{{ artwork?.title }}</p>
       <p>Starting Bid: P{{ artwork?.price }}</p>
       <ion-text color="tertiary">
-        <p class="distance">Current Bid: {{ getHighestBid(artwork) }}</p>
+        <!-- <p class="distance">Current Bid: {{ getHighestBid(artwork) }}</p> -->
+        <p class="time">
+          Starts:
+          {{
+            convertTimestampToDate(artwork?.auction?.startDate) | date : "short"
+          }}
+        </p>
       </ion-text>
     </ion-text>
   </ion-label>

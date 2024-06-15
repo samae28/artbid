@@ -11,7 +11,12 @@
       <p class="pStyle">{{ artwork?.title }}</p>
       <p>Auction Status: Ended</p>
       <ion-text color="tertiary">
-        <p class="time">Ended: {{ artwork?.endTime | date : "short" }}</p>
+        <p class="time">
+          Ended:
+          {{
+            convertTimestampToDate(artwork?.auction?.endDate) | date : "short"
+          }}
+        </p>
       </ion-text>
     </ion-text>
   </ion-label>

@@ -1,6 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Artworks } from 'src/app/models/artworks.model';
 import { Mediums } from 'src/app/models/mediums.model';
+
+import { Auction } from 'src/app/models/auction.model';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore'; // Import Firestore specifically if needed
 import { ApiService } from 'src/app/services/api/api.service';
 
 @Component({
@@ -9,16 +14,26 @@ import { ApiService } from 'src/app/services/api/api.service';
   styleUrls: ['./auction-past.component.scss'],
 })
 export class AuctionPastComponent implements OnInit {
-  @Input() artwork: any;
+  @Input() artwork: Artworks;
   artists: any[] = [];
   id: any;
   mediums: Mediums[] = [];
+  artworksList: Artworks[] = [];
   selectedSegment: string = 'past';
 
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
-    console.log('Artwork array:', this.artwork);
+    this.apiService.getArtworks().subscribe((data) => {
+      this.artworksList = data;
+    });
+  }
+
+  convertTimestampToDate(timestamp: firebase.firestore.Timestamp | Date): Date {
+    if (timestamp instanceof firebase.firestore.Timestamp) {
+      return timestamp.toDate();
+    }
+    return timestamp; // Return as is if already a Date object
   }
 
   getData(artistID: string): string {
@@ -26,13 +41,18 @@ export class AuctionPastComponent implements OnInit {
     return 'Artist Name';
   }
 
-  getHighestBid(): string {
-    if (!this.artwork.bids || this.artwork.bids.length === 0) {
-      return 'No bids yet';
+  isAuction(artwork: Artworks): boolean {
+    return artwork.isAuction === true || artwork.isAuction === 1;
+  }
+
+  getHighestBid(artwork: Artworks): number {
+    if (
+      artwork.auction &&
+      artwork.auction.bids &&
+      artwork.auction.bids.length > 0
+    ) {
+      return Math.max(...artwork.auction.bids.map((bid) => bid.bidAmount));
     }
-
-    const highestBid = Math.max(...this.artwork.bids.map((bid) => bid.amount));
-
-    return `P${highestBid}`;
+    return artwork.price;
   }
 }
